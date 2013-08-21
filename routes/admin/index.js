@@ -117,6 +117,9 @@ module.exports=function(app){
 				link:confs[1]
 			})
 		});
+		var icon=req.body.icon;
+		var pic=req.body.pic;
+		var bg=req.body.bg;
 		cate.config=config;
 		if (cate.id) {
 			Cate.update({id:cate.id},{
@@ -128,6 +131,15 @@ module.exports=function(app){
 				if (err) {
 					throw err;
 				}else{
+					if (icon) {
+						moveImage(icon,'/img/cate/icon/'+cate.alias);
+					};
+					if (bg) {
+						moveImage(bg,'/img/cate/bg/'+cate.alias);
+					};
+					if (pic) {
+						moveImage(pic,'/img/cate/pic/'+cate.alias);
+					};
 					res.redirect('/admin/cates');
 				}
 			})
@@ -137,10 +149,59 @@ module.exports=function(app){
 					throw err;
 				}
 				else{
+					if (icon) {
+						moveImage(icon,'/img/cate/icon/'+cate.alias);
+					};
+					if (bg) {
+						moveImage(bg,'/img/cate/bg/'+cate.alias);
+					};
+					if (pic) {
+						moveImage(pic,'/img/cate/pic/'+cate.alias);
+					};
 					res.redirect('/admin/cates');
 				}
 			})
 
 		}
-	})
+	}) 
+}
+function moveImage(path,newPath){
+	var fs=require('fs');
+	var filePath=__dirname+'/../../public'+path;
+	console.log(filePath);
+      fs.readFile(filePath,function(err,data){
+      	if (err) {
+      		console.log(err);
+      	}
+        var fileClass=data[0].toString()+data[1].toString();
+        var extName="";
+        //7790 exe/ 8297 rar
+        switch(fileClass){
+              case "255216":
+                    extName=".jpg";
+                    break;
+              case "7173":
+                    extName=".gif";
+                    break;
+              case "6677":
+                    extName=".bmp";
+                    break;
+              case "13780":
+                    extName=".png";
+                    break;
+              default:
+                    res.json(413,'type not match');
+                    return ;
+       }
+        var newpath=__dirname+'/../../public'+newPath+extName;
+      	fs.writeFile(newpath,data,function(err){
+      		if (err) {
+      			res.json(500,err);
+      		}
+      		else{
+      			console.log('move success');
+      		}
+      	})
+            
+     })
 }

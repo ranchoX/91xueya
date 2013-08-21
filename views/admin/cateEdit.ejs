@@ -45,8 +45,124 @@
 	</div>
 	<div class="control-group">
 		<div class="controls">
+			<input type='hidden' name='icon' id='icon'>
+			<input type='hidden' name='bg' id='bg'>
+			<input type='hidden' name='pic' id='pic'>
 			<input type='submit'  value='save'/>
 		</div>
 	</div>
 </form>
-<%script=''%>
+<form id="fileicon" action="/api/file/image" method="POST" enctype="multipart/form-data" class="form-horizontal">
+	<div class="control-group">
+		<label class="control-label">icon:</label>
+			<img src="/img/cate/icon/<%=data.alias%>.png" id="icon-pic">
+			<span class='fileinput-button'>
+				<input type="file" value="选择文件" id="upload-pic" >
+			</span>
+		</div>
+	</div>	
+</form>
+<form id="filepic" action="/api/file/image" method="POST" enctype="multipart/form-data" class="form-horizontal">
+	<div class="control-group">
+		<label class="control-label">pic:</label>
+			<img src="/img/cate/pic/<%=data.alias%>.png" id="pic-pic">
+			<span class='fileinput-button'>
+				<input type="file" value="选择文件" id="upload-pic" >
+			</span>
+		</div>
+	</div>	
+</form>
+<form id="filebg" action="/api/file/image" method="POST" enctype="multipart/form-data" class="form-horizontal">
+	<div class="control-group">
+		<label class="control-label">bg:</label>
+			<img src="/img/cate/bg/<%=data.alias%>.jpg" id="bg-pic">
+			<span class='fileinput-button'>
+				<input type="file" value="选择文件" id="upload-pic" >
+			</span>
+		</div>
+	</div>	
+</form>
+
+<script type="text/javascript">
+	$(function(){
+		$('#fileicon').fileupload({
+          add: function (e, data) {
+	              $.each(data.files,function(i,index){
+	                 if(index.size>5000000){
+	                    alert('图片大小不能超过4M');
+	                    return false;
+	                 }
+	                 if (!/(\.|\/)(gif|jpe?g|png)$/i.test(index.type)) {
+	                    alert('只支持gif、jpeg、png格式');
+	                    return false;
+	                 };
+	                  var jqXHR = data.submit().success(function (result, textStatus, jqXHR) {
+	                      if (result.ret==0) {
+	                         $("#icon-pic").attr("src",result.data).show();
+	                         $("#icon").val(result.data);
+	                      }else{
+	                        alert(result.msg);
+	                      }
+	                  }).error(function (jqXHR, textStatus, errorThrown) {
+	                        console.log(jqXHr);
+	                        console.log('error');
+	                      });
+	              })
+	             
+	          }
+	      });
+$('#filebg').fileupload({
+          add: function (e, data) {
+	              $.each(data.files,function(i,index){
+	                 if(index.size>5000000){
+	                    alert('图片大小不能超过4M');
+	                    return false;
+	                 }
+	                 if (!/(\.|\/)(gif|jpe?g|png)$/i.test(index.type)) {
+	                    alert('只支持gif、jpeg、png格式');
+	                    return false;
+	                 };
+	                  var jqXHR = data.submit().success(function (result, textStatus, jqXHR) {
+	                      if (result.ret==0) {
+	                         $("#bg-pic").attr("src",result.data).show();
+	                         $("#bg").val(result.data);
+	                      }else{
+	                        alert(result.msg);
+	                      }
+	                  }).error(function (jqXHR, textStatus, errorThrown) {
+	                        console.log(jqXHr);
+	                        console.log('error');
+	                      });
+	              })
+	             
+	          }
+	      });
+$('#filepic').fileupload({
+          add: function (e, data) {
+	              $.each(data.files,function(i,index){
+	                 if(index.size>5000000){
+	                    alert('图片大小不能超过4M');
+	                    return false;
+	                 }
+	                 if (!/(\.|\/)(gif|jpe?g|png)$/i.test(index.type)) {
+	                    alert('只支持gif、jpeg、png格式');
+	                    return false;
+	                 };
+	                  var jqXHR = data.submit().success(function (result, textStatus, jqXHR) {
+	                      if (result.ret==0) {
+	                         $("#pic-pic").attr("src",result.data).show();
+	                         $("#pic").val(result.data);
+	                      }else{
+	                        alert(result.msg);
+	                      }
+	                  }).error(function (jqXHR, textStatus, errorThrown) {
+	                        console.log(jqXHr);
+	                        console.log('error');
+	                      });
+	              })
+	             
+	          }
+	      });
+	})
+</script>
+<% script='<script src="/js/lib/jquery.iframe-transport.js"></script><script src="/js/lib/jquery.fileupload.js"></script><script src="/js/lib/jquery.fileupload-process.js"></script><script src="/js/lib/jquery.fileupload-image.js"></script><script src="/js/lib/jquery.fileupload-validate.js">'%>
