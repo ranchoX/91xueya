@@ -78,7 +78,7 @@ app.use(function(err, req, res, next){
   util.error(err);
   res.send(500, { error: err });
 })
-
+/*当前属于分支xueya下吗*/
 // development only
 // if ('development' == app.get('env')) {
 //   app.use(express.errorHandler());
