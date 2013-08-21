@@ -1,0 +1,64 @@
+<%if(user.id>0){%>
+	<div class='comment-response clearfix'>
+		<textarea type='text' class='comment-response-content' ></textarea>
+		<div><input type='button' class='comment-response-btn pull-right' value='回应'/></div>
+	</div>
+<%}else{%>
+您还没有登录，请先<a href="javascript:;" class='comment-login'>登录</a>
+<%}%>
+<div class='comment-items'>
+	<div class="item-first"></div>
+	<%for(var i=0;i<comments.length;i++){%>
+		<div class='comment-item clearfix' data-id='<%=comments[i].attributes.id%>'>
+			<div class='comment-pic'>
+				<a href='/u<%=comments[i].attributes.userId%>' ><img src='/img/user/user.jpg' class='' /></a>
+			</div>
+			<div class='comment-content'>
+				<a href='/u<%=comments[i].attributes.userId%>' ><%=comments[i].attributes.userName%></a>:	
+				<%=comments[i].get('content')%>
+				<div class='comment-btn'>
+					<span class="gray"><%=comments[i].get('addDate3')%></span>
+					<%if(user.id>0){%>
+					<a href='javascript:;' class='response-btn' data-userid='<%=comments[i].attributes.userId%>' data-username='<%=comments[i].attributes.userName%>' >回复</a>
+					<%}%>
+					
+				</div>
+				
+					<div class='reply-items'>
+
+						<%_.each(comments[i].get('children'),function(child){%>
+							<div class="reply-item">
+								<div class='comment-pic'>
+									<a href='/u<%=child.userId%>' ><img src='/img/user/user.jpg' class='' /></a>
+								</div>
+								<div>
+									<a href='/u<%=child.userId%>' ><%=child.userName%></a>
+									<%if(child.replyUserId){%>
+									回复<a href='/u<%=child.replyUserId%>' ><%=child.replyUserName%></a>
+									<%}%>:	
+									<%=child.content%>
+									<div class='comment-btn'>
+										<span class="gray"><%=child.addDate3%></span>
+										<%if(user.id>0){%>
+										<a href='javascript:;' class='response-btn' data-userid='<%=child.userId%>' data-username='<%=child.userName%>' >回复</a>
+										<%}%>
+										
+									</div>
+								</div>
+							</div>
+						<%})%>
+						<div class="reply-last"></div>	
+					</div>
+			
+				<div class='response-container hide'>
+					<textarea type='text' class='response-content' ></textarea>
+					<div><input type='button' class='pull-right' value='回应'/></div>
+				</div>
+			</div>
+		</div>
+	<%}%>
+	<%if(comments.length==0){%>
+	还没有相关评论
+	<%}%>
+</div>
+

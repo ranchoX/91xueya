@@ -1,0 +1,37 @@
+<%style=''%>
+<div class="row" id='question'>
+	<div class="span8">
+		<form method="post" class="form-horizontal">
+			<input type='hidden' name='id' value='<%=ques.id%>'>
+			<legend>问题编辑</legend>
+			<div class="control-group">
+				<label class='control-label'>标题:</label>
+				<div class="controls">
+					<input type='text' value='<%=ques.title%>' name='title' id='title' />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class='control-label'>内容:</label>
+				<div class="controls">
+					<textarea name='content' id='content'> <%=ques.content%></textarea>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class='control-label'>位置:</label>
+				<div class="controls">
+					<input type='text' name='location' id='location' value='<%=ques.location%>' />
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<input type='submit' class='btn' id='update' value='更新'>
+					<a href="/question/<%=ques.id%>">取消</a>
+				</div>
+				
+			</div>
+		</form>
+	</div>
+	<div class="span3 offset1"></div>
+</div>
+
+<%script='<script type="text/javascript" src="/js/question-edit.js"></script>'%>

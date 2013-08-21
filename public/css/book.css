@@ -1,0 +1,74 @@
+.subject-name{
+	font-size: 25px;
+	line-height: 1.1;
+	margin-bottom: 10px;
+}
+.subject-pic{
+	float:left;
+	margin:3px 14px 0 0;
+}
+.subject-pic img{
+	width:112px;
+	height: 144px;
+}
+.subject-pic p{
+	text-align: center;
+}
+.subject-info{
+	float:left;
+	padding: 5px 0;
+}
+.subject-other{
+	clear: both;
+}
+.subject-desc{
+	clear:both;
+	margin-top:24px;
+}
+h2{
+	color: #007722;
+	font-size: 15px;
+	line-height:1.5;
+}
+.span3{
+	background-color: #f6f6f1;
+}
+
+.subject-questions{
+	margin-top:24px;
+}
+.question-item{
+	margin: 12px 0;
+}
+.question-pic{
+	float: left;
+	margin-right: 5px;
+}
+.question-info{
+	float: left;
+	width:500px;
+}
+.question-info h6{
+	margin:0;
+}
+
+.subject-notes{
+	margin-top:24px;
+}
+.note-item{
+	margin: 12px 0;
+}
+.note-pic{
+	float: left;
+	margin-right: 5px;
+}
+.note-info{
+	float: left;
+	width:500px;
+}
+.note-info h6{
+	margin:0;
+}
+.subject-menus{
+	margin-top:24px;
+}

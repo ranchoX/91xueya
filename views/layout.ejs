@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title><%=title%></title>
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/css/font-awesome.css">
+  <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.custom.css">
+   <link rel="stylesheet" type="text/css" href="/css/layout.css">
+<style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <%-style%>
+    <script type="text/javascript" src="/js/jquery-1.10.1.min.js"></script>
+    <script>
+      var user={
+        id: <%=userId%>,
+        name:'<%=username%>'
+      }
+      var cates=[<%=cates%>];
+    </script>
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+         
+          <a class="brand" href="/">91学涯</a>
+          <form class='form-search navbar-form pull-left'>
+            <div class="input-append">
+               <input type='text' placeholder='你想学习什么？' />
+               <span class='add-on'><i class='icon-search'></i></span>
+            </div>
+          </form>
+          <div class="nav-collapse collapse">
+            <ul class="nav" style='width:520px'>
+              <li class="nav-index"><a href="/">首页</a></li>
+              <li class='nav-find'><a href="/cates">发现</a></li>
+              <% if(userId){%>
+               <li class="dropdown nav-studing">
+                <a href="#" class="dropdown-toggle " data-toggle="dropdown">关注中<b class="caret"> </b></a>
+                <ul class="dropdown-menu">
+                  <%for(var i=0;i<attentionCates.length;i++){%>
+                     <li><a href="/<%=attentionCates[i].alias%>"><%=attentionCates[i].name%></a></li>
+                  <%}%>
+                  <%if(attentionCates.length==0){%>
+                    <li><span>还未关注任何领域</span></li>
+                  <%}%>
+                </ul>
+              </li>
+              <li class="dropdown nav-note">
+               <a href="#" class="dropdown-toggle " data-toggle="dropdown">待发布<b class="caret"> </b></a>
+                <ul class="dropdown-menu">
+                   <%for(var i=0;i<drafts.length;i++){%>
+                     <li>pic<a href="<%=drafts[i].link%>"><%=drafts[i].name%></a></li>
+                  <%}%>
+                  <%if(drafts.length==0){%>
+                  <li >暂无任何待发布内容</li>
+                  <%}%>
+                 
+                 
+                </ul>
+             </li>
+              
+              <li class="dropdown nav-question"> 
+                <a href="#" class="dropdown-toggle " data-toggle="dropdown">功能<b class="caret"> </b></a>
+                <ul class="dropdown-menu">
+                   <li><a href="/note/add">新建笔记</a></li>
+                   <li><a href="/question/add">新建疑问</a></li>
+                </ul>
+              </li>
+              <li class='nav-message'> <a href="/message">消息</a></li>
+              <li class="dropdown">
+                 <a href="#" class="dropdown-toggle " data-toggle="dropdown"><%= username%><b class="caret"> </b></a>
+                 <ul class=dropdown-menu>
+                  <li><a  href='/setting'>我的帐号</a></li>
+                  <li><a  href='/u<%=userId%>'>我的主页</a></li>
+                  <li><a  href='/logout'>退出</a></li>
+                 </ul>
+               </li>
+              <%}else{%>
+               <li id='nologin'>
+                <div >
+                   <a href="/reg">注册</a>
+                  <a href="/login">登录</a> 
+                </div>
+              </li>
+              <%} %>
+            </ul>
+            
+            <span id='ajax-loadding' class='hide' style='background-color: white;'><i class='icon-spinner icon-spin'></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+	<div id="container" class="container">
+		<%-body%>
+	</div>
+	<hr/>
+	<footer>
+  <!--   <ul class='nav nav-list'>
+      <li><a href="/about">关于我们</a></li>
+      <li><a href="/join">加入我们</a></li>
+    </ul> -->
+<a href="/about">关于我们</a>
+<a href="/join">加入我们</a>
+	</footer>
+  <%if(userId==0){%>
+  <div class="login-force-form hide">
+      <div class='login-form'>
+        <input type="text" class="span2" placeholder="邮箱/昵称" >  
+        <br/>  
+        <input type="password" class="span2" placeholder="密码" >  
+        <br/>  
+        <input type="button" value='登录'/>  
+      </div>
+      <div class="otherlogin">
+        <a href='#'>sina</a>
+        <a href='#'>qq</a>
+        <a href='#'>renren</a>
+        <a href='#'>douban</a>
+      </div>
+  </div>
+  <%}%>
+  <div class="tips-close hide">
+    <span>你确定要删除吗？</span>
+  </div>
+  <div class="tips-ok hide">
+    <span>提交成功</span>
+  </div>
+  <div class='question-form hide'>
+
+  </div>
+</body>
+
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+<script type="text/javascript" src="/js/jquery-ui-1.10.3.custom.js"></script>
+<script type="text/javascript" src="/js/jquery-ui-datepicker-zh.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/backbone-min.js"></script>
+<script type="text/javascript" src="/js/layout.js"></script>
+<script type="text/javascript" src="/js/app.js"></script>
+<%-script%>
+</html>

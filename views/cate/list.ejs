@@ -1,0 +1,48 @@
+<%style=''%>
+<style type="text/css">
+	.config label{
+		display: inline;
+	}
+	.config input{
+		margin-right: 5px;
+	}
+</style>
+<table class='table'>
+	<thead>
+		<th>ID</th>
+		<th>name</th>
+		<th>alias</th>
+		<th>desc</th>
+		<th>config</th>
+		<th>operate</th>
+	</thead>
+	<tbody>
+		<%_.each(data,function(item){%>
+		<tr>
+			<td><%=item.id%></td>
+			<td><%=item.name%></td>
+			<td><%=item.alias%></td>
+			<td><%=item.desc%></td>
+			<td>
+				<div class='config'>
+				<%_.each(config,function(conf){%>
+				<label><%=conf.name%>
+				<%var checked=_.find(item.config,function(check){
+					return check.link==conf.link;
+				})%>
+				 <input type='checkbox' name='config' <%=checked?'checked':''%> >
+				<%})%>
+				</label>
+				</div>
+			</td>
+			<td>
+				<a href="/admin/cate/edit/<%=item.id%>">编辑</a>
+				<a href="/<%=item.alias%>" target='_blank'>enter</a>
+				</td>
+		</tr>
+		<%})%>
+	</tbody>
+	
+</table>
+<a href="/admin/cate/add">add</a>
+<%script=''%>

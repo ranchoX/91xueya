@@ -1,0 +1,53 @@
+<%style='<link rel="stylesheet" type="text/css" href="/css/note-index.css" />'%>
+<script>
+	var note={
+		id:<%=note.id%>,
+		state:<%=note.state%>
+	};
+</script>
+<div class="row">
+	<div class="span8">
+		<div>
+			<h2 class='note-detail-subjectName'><%=note.subjectName%></h2>
+			<div class='note-user'>
+				<a href='/u<%=note.userId%>' target='_blank'><img src='/img/user/user.jpg'/></a>
+				
+				<a href='/u<%=note.userId%>' target='_blank'><%=note.userName%></a>
+			</div>
+			
+			<div class='note-detail-info annotation'>
+				<%=note.chapterName%>
+				<%=note.addDate%>
+			</div>
+			
+				<%-note.content.trim()%>
+			
+			<%if(userId==note.userId){%>
+			<div>
+				<a href='/note/add?id=<%=note.id%>'>修改</a>>><a href='javascript:;' class='note-delete'>删除</a>
+				<%if(note.state==0){%>
+				<a href='javascript:;' >publish</a>
+				<%}%>
+			</div>
+			<%}%>
+			
+		</div>
+		
+		<div id="comment-container">
+		</div>
+	</div>
+	<div class="span3 offset1">
+		<%if(note.modifies.length){%>
+		修改记录
+		<%for(var i=0;i<note.modifies.length;i++){%>
+		<div>
+			<%=toDate(note.modifies[i].addDay)%>
+				<br/>
+			<%=note.modifies[i].content%></div>
+		<%}%>
+		<%}else{%>
+		tips'推荐笔记
+		<%}%></div>
+		<a href='/<%=cate.alias%>' >进入<%=cate.name%></a>
+</div>
+<%script='<script src="/js/note-index.js"></script>'%>

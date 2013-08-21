@@ -1,0 +1,55 @@
+<%style='<link href="/css/user-index.css" rel="stylesheet" type="text/css" />'%>
+<div class="row">
+	<div class="span8">
+		<div class="clearfix">
+			<a href='/u<%=user.id%>' class='user-pic'><img src='/img/user/user.jpg'/></a>
+			<div id="user-info">
+				<h1><%=user.username%></h1>
+				<ul class='nav nav-pills'>
+					<li><a href='/u<%=user.id%>'>主页</a></li>
+					<li><a href='/u<%=user.id%>/note'>笔记</a></li>
+					<li><a href='/u<%=user.id%>/question'>问题</a></li>
+					<li><a href='/u<%=user.id%>/reading'>在读</a></li> 
+					<li><a href='/u<%=user.id%>/readied'>读过</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="reading">
+			<h3>在读  · · ·  ( <%=user.studingBooks.length%>本 )</h6>
+			<ul class="nav nav-pills">
+			<%for(var i=0;i<user.studingBooks.length;i++){%>
+				<li>
+					<a href="/book/<%=user.studingBooks[i].bookId%>" class='book-pic'> <img src='<%=user.studingBooks[i].pic%>' alt='<%=user.studingBooks[i].bookName%>' /><%=user.studingBooks[i].bookName%></a>
+				</li>
+			<%}%>
+			</ul>
+		</div>
+		<div class="notes">
+			<h3>我的笔记   · · · ( <%=notes.length%>篇  )</h6>
+			
+			<%for(var i=0;i<notes.length;i++){%>
+				<div>
+					<h6><a href='/note/<%=notes[i].id%>'><%=notes[i].subjectName%></a></h6>
+					<%=notes[i].content%>
+				</div>
+			<%}%>
+			
+		</div>
+	</div>
+	<div class="span3 offset1">
+		<div class="info">
+			<a href='/u<%=user.id%>' class="user-pic"><img src='/img/user/user.jpg'/></a>
+			<div>
+				<%=user.username%>
+				<br/>
+				<%=user.addDate%>
+			</div>
+			<div>
+				笔记 <%=notes.length%>
+
+			</div>
+		</div>
+		<div class="lastReading">lastReading</div>
+	</div>
+</div> 
+<%script=''%>

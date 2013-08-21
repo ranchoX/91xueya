@@ -1,0 +1,19 @@
+<% if(books&&books.length){%>
+<% for(var i=0;i<books.length;i++){%>
+<div class="item">
+	<div class='pic'>
+		<a href='/subject/<%=books[i].id%>'><img src='/img/book/book.jpg'></a>
+	</div>
+	<div>
+		<h4><a href='/subject/<%=books[i].id%>'><%=books[i].name%></a></h4>
+		<%=books[i].pdf%>
+		<p>出版年:<%=books[i].publishDate%></p>
+	</div>
+	<div>
+		<%=books[i].desc%>
+	</div>
+</div>
+<%}%>
+<%}else{%>
+cant' find any subject.
+<%}%>

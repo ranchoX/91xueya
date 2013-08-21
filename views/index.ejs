@@ -1,0 +1,97 @@
+<% style='<link rel="stylesheet" type="text/css" href="/css/index.css"/>'%>
+
+<div class="row">
+	<div style="padding-left: 22px;">
+			<h3>欢迎，<%=username==''?'游客':username%></h3>
+			<span class='gray'>以下内容是系统推荐的</span>
+	</div>
+	<div class="span8">
+		<div class="recommend-items">
+			<%for(var i=0;i<recommends.length;i++){%>
+				<%if(recommends[i].subjectType=='book'){%>
+					<div class='book-item clearfix'>
+						<a class='book-pic' href='/book/<%=recommends[i].id%>'><img class='img-polaroid' src='<%=recommends[i].pic%>'></a>
+						<div class='book-info'>
+							<h4 title='<%=recommends[i].name%>' class='book-name'><a  href='/book/<%=recommends[i].id%>' class='book-name' target='_blank'><%=recommends[i].name%></a></h4>
+							<span class='gray book-author' title='<%=recommends[i].author%>'>作&nbsp;&nbsp;者:&nbsp;<%=recommends[i].author%></span>
+							<br/>
+							<span class='gray'>出版年:&nbsp;<%=recommends[i].publishDate2%></span>
+						<!-- 	<p class='gray'>正在学习(<%=recommends[i].studingPeopleNum%>)/已学习(<%=recommends[i].studiedPeopleNum%>)</p> -->
+							<p class='gray book-desc' title='<%=recommends[i].desc%>' ><%=getRowStr(recommends[i].desc,3)%></p>
+							<div class="book-btn clearfix">
+								<a href='javascript:;' class='' data-bookId='<%=recommends[i].id%>' data-studyType=0>在读</a>
+								<a href='javascript:;' class='' data-bookId='<%=recommends[i].id%>' data-studyType=1>已读</a>
+							</div>
+						</div>
+						
+					</div>
+				<%}else if(recommends[i].subjectType=='note'){%>
+					<div class="note-item clearfix" data-id='<%=recommends[i].id%>'>
+						<a href="/u<%=recommends[i].userId%>" title='<%=recommends[i].userName%>' class='user-pic'>
+							<img class='img-polaroid' src="/img/user/user.jpg">
+						</a>
+						<div class="note-detail">
+							<h4> 
+								<a href="/note/<%=recommends[i].id%>" target='_blank'><%=recommends[i].userName+'的《'+recommends[i].subjectName+'》笔记'%></a>
+							</h4>
+							<div class="note-content ">
+								<%-recommends[i].content%>
+							</div>
+							<div class="note-btn">
+								<span class="gray">位置:<%=recommends[i].chapterName%></span>
+								<a href="javascript:;" class='note-comment pull-right' data-id='<%=recommends[i].id%>'>评价(<%=recommends[i].commentNum%>)</a>
+							</div>
+						</div>
+						
+					</div>
+				<%}else if(recommends[i].subjectType=='question'){%>
+				<div class="ques-item clearfix" data-id='<%=recommends[i].id%>'>
+					<a href="/u<%=recommends[i].userId%>" title='<%=recommends[i].userName%>' class='user-pic'>
+						<img class='img-polaroid' src="/img/user/user.jpg">
+					</a>
+					<div class="ques-detail">
+						<h4>
+							<i class='icon-question-sign'></i><a href="/question/<%=recommends[i].id%>" target='_blank'><%=recommends[i].title%></a>
+						</h4>
+					<!-- 	<div class="ques-ellipsis">
+							<%=recommends[i].ellipsis%>
+							<a href="javascript:;">read full</a>
+						</div> -->
+						<div class="ques-content ">
+							<%=recommends[i].content%>
+							<!-- <a href="javascript:;">read less</a> -->
+						</div>
+						<div class="ques-btn clearfix">
+							<span class="gray">位置:<%=recommends[i].location%></span>
+							<a href="javascript:;" class='pull-right ques-quick-answer'>快速回答<i class=' icon-caret-down'></i></a>
+						</div>
+					</div>
+					
+				</div>
+				<%}%>
+			<%}%>
+			<div class='clearfix' id='loadMore'>
+				<a href="javascript:;">加载更多</a>
+			</div>
+			
+		</div>
+	</div>
+	<div class="span3 offset1">
+		<div id='feedback-tips'>
+			91学涯是一个提供大家学习交流的平台，网站还处于测试期，有很多bug和很多功能没有完善,请大家见谅。
+			<br/>
+			反馈请点<a href="/feedback" target='_blank'>这里</a>
+		</div>
+		<div id='hotCates'>
+			<h6>热门专业</h6>
+			<ul class='nav'>
+				<%_.each(hotCates,function(item){%>
+					<li>
+						<a href="/<%=item.alias%>" target='_blank'><%=item.name%></a>
+					</li>
+				<%})%>
+			</ul>
+		</div>
+	</div>
+</div>
+<% script='<script type="text/javascript" src="/js/index.js"></script>'%>

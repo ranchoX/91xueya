@@ -1,0 +1,58 @@
+<% style=''%> 
+
+<style type="text/css">
+  .controls .error{
+    content:"error";
+  }
+  .controls .error.valid{
+    content:"error.valid";
+  }
+</style>
+<form class="form-horizontal" id="form-reg" method="post">
+  <fieldset>
+    <legend>用户注册</legend>
+    <div class="control-group">
+      <label class="control-label" for="username">用户名:</label>
+      <div class="controls">
+        <input type ="text" tabindex=1 id="username"  maxlength=12 value='<%= user.username%>' name="username" placeholder="" require />
+        <span class="help-inline hide">英文、数字、汉字或下划线，2-12位，不区分大小写</span>
+      </div>
+    </div>
+   <div class="control-group">
+      <label class="control-label" for="useremail">邮箱:</label>
+      <div class="controls">
+        <input type="email" tabindex=2 id="useremail"   name="useremail" value='<%= user.email%>' placeholder="邮箱" require/>
+       <span class="help-inline hide">输入你常用的电子邮箱</span>
+      </div>
+    </div>
+     
+      <div class="control-group">
+      <label class="control-label" for="password">密码:</label>
+      <div class="controls">
+        <input type="password" tabindex=3 id="password" required name="password" placeholder="密码" maxlength=20 require/>
+         <span class="help-inline hide">英文、数字或符号，6-20位，区分大小写:</span>
+      </div>
+    </div>
+   <div class="control-group">
+      <label class="control-label" for="rePassword">确认密码:</label>
+      <div class="controls">
+        <input type="password" tabindex=4 id="rePassword"  name="rePassword" placeholder="确认密码" maxlength=20 />
+        <span class="help-inline hide">为保持密码的准确性，请再次输入密码</span>
+      </div>
+    </div>
+    <!-- <div class="control-group">
+      <label class="control-label" tabindex=5 for="validNum">验证码:</label>
+      <div class="controls">
+        <input type="text" id="validNum" tabindex=6 maxlength=4 class="span1" name="validNum" placeholder="验证码" />
+      </div>
+
+    </div> -->
+    <div class="control-group">
+      <div class="controls">
+        <input type="submit" tabindex=7 class="btn"  value='注册'/>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<% script='<script type="text/javascript" src="/js/jquery.validate.js"></script><script type="text/javascript" src="/js/reg.js"></script>'%>
+

@@ -1,0 +1,21 @@
+<% if(questions&&questions.length){%>
+<% for(var i=0;i<questions.length;i++){%>
+<div class="question-item clearfix">
+	<div class='question-pic'>
+		<a href='/u<%=questions[i].userId%>'><img src='/img/user/user.jpg'/></a>
+		<br/>
+		<a href='/u<%=questions[i].userId%>'><%=questions[i].userName%></a>
+	</div>
+	<div class='question-info'>
+		<h6><a href='/question/<%=questions[i].id%>'> <%=questions[i].title%></a></h6>
+		<div>
+			<%=questions[i].content%>
+		</div>
+		位于:<%=questions[i].location%>
+		<span class='pull-right'><%=questions[i].addDate3%></span>
+	</div>
+</div>
+<%}%>
+<%}else{%>
+cant' find any questions.
+<%}%>

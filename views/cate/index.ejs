@@ -1,0 +1,71 @@
+<%style='<link rel="stylesheet" type="text/css" href="/css/cate-index.css"/>'%>
+<style type="text/css">
+	body{
+		background:url('/img/cate/<%=cate.alias%>.jpg') no-repeat center top;
+		background-color: #c3f3ff;
+	}
+</style>
+<script type="text/javascript">
+	var cate={
+		id:<%=cate.id%>,
+		name:"<%=cate.name%>",
+		alias:"<%=cate.alias%>"
+	};
+</script>
+<div class="cate-top">
+	<h1><%=cate.name%></h1>
+	<ul class='nav nav-tabs' id='cate-nav'>
+		<li> 
+			<a href="#index">主页</a>
+		</li>
+		<%for(var i=0;i<cate.config.length;i++){%>
+			<li> 
+				<a href="#<%=cate.config[i].link%>"><%=cate.config[i].name%></a>
+			</li>
+		<%}%>
+	</ul>
+</div>
+<div class="row">
+	<div class="span8" id="cate-container">
+	</div>
+	<div class="span3 offset1">
+		<form class="form-search navbar-form pull-left">
+            <div class="input-append">
+               <input type="text" placeholder="查询">
+               <span class="add-on"><i class="icon-search"></i></span>
+            </div>
+         </form>
+		<%if(userId>0){%>
+		<div class='user-info'>
+			<a href="">
+				<img src="/img/user/user.jpg"/>
+			</a>
+			<div>
+				<a href="/u<%=userId%>"><%=username%></a>
+				 <%var hasAtten=_.find(attentionCates,function(item){
+				 	return item.id==cate.id;
+				 })%>
+				 <%if(hasAtten){%>
+		         	<div>已经关注，<a href="javascript:;" class='' id='cate-atten-cancel' >取消</a></div>
+		         <%}else{%>
+					<a href="javascript:;" class='btn btn-danger' id='cate-atten' >关注<%=cate.name%></a>
+				 <%}%>
+			</div>
+		</div>
+		<%}else{%>
+		<div>
+			<a href="/login" class='btn'>登录</a>
+		</div>
+		<%}%>
+		<div>
+			名人
+			<ul>
+				<li> <a href="/u4">Lycoria</a> </li>
+				<li> <a href="/u4">Lycoria</a> </li>
+				<li> <a href="/u4">Lycoria</a> </li>
+				<li> <a href="/u4">Lycoria</a> </li>
+			</ul>
+		</div>
+	</div>
+</div>
+<%script='<script type="text/javascript" src="/js/cate-index.js"></script>'%>

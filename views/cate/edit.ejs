@@ -1,0 +1,52 @@
+<%style=''%>
+<style type="text/css">
+	.config label{
+		display: inline;
+	}
+	.config input{
+		margin-right: 5px;
+	}
+</style>
+<form class='form-horizontal' action='/admin/cate/add' id='form-note' method='post'>
+	<legend>add cate</legend>
+	<input type='hidden'  id='id' value='<%=data.id==undefined?'':data.id%>' name='id' />
+	<div class="control-group">
+		<label class="control-label">name:</label>
+		<div class="controls"> 
+			<input type='text' id="name" name='name' value='<%=data.name%>' />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">alias:</label>
+		<div class="controls"> 
+			<input type='text' id="alias" name='alias' value='<%=data.alias%>' />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">desc:</label>
+		<div class="controls"> 
+			<textarea id="desc" name='desc' ><%=data.desc%></textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">config:</label>
+		<div class="controls"> 
+			<div class='config'>
+				<%_.each(config,function(conf){%>
+				<label><%=conf.name%>
+				<%var checked=_.find(data.config,function(check){
+					return check.link==conf.link;
+				})%>
+				 <input type='checkbox' name='config' value='<%=conf.name+","+conf.link%>' <%=checked?'checked':''%> >
+				<%})%>
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type='submit'  value='save'/>
+		</div>
+	</div>
+</form>
+<%script=''%>

@@ -1,0 +1,77 @@
+<% style='<link rel="stylesheet" type="text/css" href="/css/jquery.fileupload-ui.css">'%>	
+<form id="fileupload" action="/api/file/image" method="POST" enctype="multipart/form-data" class="form-horizontal">
+	<legend>添加书籍</legend>
+	<div class="control-group">
+		<label class="control-label">上传封面:</label>
+		<div class="controls"> 
+			<span class='gray'>图片大小不能超过4M</span>
+			<span class='gray'>只支持gif、jpeg、png格式</span>
+			<br/>
+			<span class='fileinput-button'>
+				 <i class="icon-plus icon-white"></i>
+                 <span>添加文件</span>
+				<input type="file" value="选择文件" id="upload-pic" >
+			</span>
+			<br/>
+			<img src='<%=book.pic%>' class='<%=_.isUndefined(book.pic)?'hide':''%>' id='bookpic' width="80" height="80" />
+		</div>
+	</div>	
+</form>
+<form class='form-horizontal' method='post' id='book-form' action='/admin/book/add'>
+	<input type='hidden' id='id' name='id' value='<%=book.id%>'/>
+	<input type='hidden' id='pic' name='pic' value='<%=book.pic%>'/>
+	<input type='hidden' id='state' name='state' value='1'/>
+	<div class="control-group">
+		<label class="control-label" for=''>书名:</label>
+		<div class="controls">
+			<input type='text' id="name" name='name' value='<%=book.name%>' placeholder='bookname'/>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label">介绍:</label>
+		<div class="controls"> 
+			<textarea type='text' id='desc' name='desc' ><%=book.desc%></textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">分类:</label>
+		<div class="controls"> 
+			<select id='cateId' name='cateId'>
+			<% for (var i=0;i<newCates.length;i++){%>
+				<option value='<%= newCates[i].id%>' <%=newCates[i].id==book.cateId?'selected=selected':''%> ><%=newCates[i].name%></option>
+			<%}%>
+			</select>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">作者:</label>
+		<div class="controls"> 
+			<input type='text' id='author' value='<%=book.author%>' name='author'/>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">出版商:</label>
+		<div class="controls"> 
+			<input type='text' id='publisher' value='<%=book.publisher%>' name='publisher'/>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">出版日期:</label>
+		<div class="controls"> 
+			<input type='text' id='publishDate' value='<%=book.publishDate.getFullYear()+'-'+(book.publishDate.getMonth()+1)+'-'+book.publishDate.getDate()%>'  name='publishDate'/>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">目录:</label>
+		<div class="controls"> 
+			<textarea id='menus' name='menus' ><%=book.menus%></textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<input type='button' id='draft' value='保存草稿' />
+		<input type='submit' id='publish' value='提交' />
+	</div>	
+</form>
+<div id="files"></div>
+<% script='<script type="text/javascript" src="/js/jquery.validate.js"></script><script src="/js/jquery.iframe-transport.js"></script><script src="/js/jquery.fileupload.js"></script><script src="/js/jquery.fileupload-process.js"></script><script src="/js/jquery.fileupload-image.js"></script><script src="/js/jquery.fileupload-validate.js"></script><script src="/js/book-add.js"></script>'%>

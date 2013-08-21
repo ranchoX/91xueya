@@ -1,0 +1,25 @@
+<%if(notes.length){%>
+<%for(var i=0;i<notes.length;i++){%>
+<div class="note-item clearfix">
+	<a href="/u<%=notes[i].attributes.userId%>" class='user-pic'>
+		<img class='img-polaroid' src="/img/user/user.jpg">
+	</a>
+	<div class="note-detail">
+		<h4> 
+			<a href="/note/<%=notes[i].attributes.id%>" target='_blank'><%=notes[i].attributes.userName+'的《'+notes[i].attributes.subjectName+'》笔记'%></a>
+		</h4>
+		<div class="note-content ">
+			<%=notes[i].get('content')%>
+		</div>
+		<div class="note-btn">
+			<span class='gray'><%=notes[i].attributes.addDate3%></span>
+			<span class="gray">位置:<%=notes[i].attributes.chapterName%></span>
+			<a href="javascript:;" class='note-comment pull-right' data-id='<%=notes[i].get('id')%>'>评价(<%=notes[i].get('commentNum')%>)</a>
+		</div>
+	</div>
+	
+</div>
+<%}%>
+<%}else{%>
+暂时没有相关问题.
+<%}%>

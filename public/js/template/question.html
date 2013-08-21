@@ -1,0 +1,26 @@
+搜索、已回答、未回答的
+<%if(ques.length){%>
+<%for(var i=0;i<ques.length;i++){%>
+<div class="ques-item clearfix" data-id='<%=ques[i].get('id')%>'>
+	<a href="/u<%=ques[i].get('userId')%>" class='user-pic'>
+		<img class='img-polaroid' src="/img/user/user.jpg">
+	</a>
+	<div class="ques-detail" >
+		<h4>
+			<i class='icon-question-sign'></i><a href="/question/<%=ques[i].get('id')%>" target='_blank'><%=ques[i].get('title')%></a>
+		</h4>
+		<div class="ques-content ">
+			<%=ques[i].get('content')%>
+			<!-- <a href="javascript:;">read less</a> -->
+		</div>
+		<div class="ques-btn">
+			<a href="javascript:;" class='pull-right ques-quick-answer'>快速回答<i class=' icon-caret-down'></i></a>
+		</div>
+	</div>
+	
+	
+</div>
+<%}%>
+<%}else{%>
+暂时没有相关问题.
+<%}%>

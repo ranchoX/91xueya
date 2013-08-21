@@ -1,0 +1,18 @@
+<%for(var i=0;i<notes.length;i++){%>
+<div class='note-item clearfix'>
+	<div class='note-pic'>
+		<a href='/u<%=notes[i].userId%>'><img src='/img/user/user.jpg'/></a>
+		<br/>
+		<a href='/u<%=notes[i].userId%>'><%=notes[i].userName%></a>
+	</div>
+	<div class='note-info'>
+		<h6><a href='/note/<%=notes[i].id%>'><%=notes[i].chapterName%></a> </h6>
+		<div>
+			<%=notes[i].content%>
+		</div>
+		<div>
+			<span class='pull-right'><%=notes[i].addDate%></span>
+		</div>
+	</div>
+</div>
+<%}%>

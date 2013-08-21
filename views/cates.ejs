@@ -1,0 +1,32 @@
+<% style='<link href="/css/cates.css" rel="stylesheet" type="text/css" />'%>
+<div>
+	<ul class='nav nav-tabs'>
+		<li class='active'>
+			<a href='/cates'>全部</a>
+		</li>
+	</ul>
+</div>
+<div>
+	<ul class='nav'>
+		<% for (var i=0;i<data.length;i++){%>
+		<li>
+			<div class='cate-item clearfix'>
+				<a class='cate-pic' href="/<%= data[i].alias%>">	
+					<img src="/img/cate/pic/<%=data[i].alias%>.png" title='<%= data[i].name %>'/>
+				</a>
+				<div class='cate-detail'>
+					<h6><a href='/<%= data[i].alias%>'><%= data[i].name %></a></h6>
+					<p><%=data[i].desc%></p>
+					<%if(_.indexOf(ids,data[i].id)>-1){%>
+					<a href="/<%= data[i].alias%>">进入主页</a>
+					<%}else{%>
+					<a href="javascript:;" class='cate-atten' data-id='<%=data[i].id%>' data-alias='<%=data[i].alias%>'>加关注</a>
+					<%}%>
+				</div>
+			</div>
+			
+		</li>
+		<%}%>
+	</ul>
+</div>
+<% script='<script type="text/javascript" src="/js/cates.js"></script>'%>

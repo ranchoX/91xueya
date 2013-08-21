@@ -1,0 +1,42 @@
+<% style=''%>
+<style type="text/css">
+	#loginBg{
+		height: 500px;
+		width: 940px;
+		position: relative;
+		background:url('/img/loginBg.jpg') no-repeat 0 0;
+	}
+	#loginForm{
+		position: absolute;
+		right: 110px;
+		top: 30px;
+		width: 250px;
+	}
+</style>	
+<div id='loginBg'>
+	<div id="loginForm">
+		<form class="form-signin" method="POST">
+		  <h2 class="form-signin-heading">请登录</h2>
+		  <input type='hidden' value='<%=url%>' name='url'>
+		  <input type="text" class="input-block-level" value='<%=user.username%>' name="username" placeholder="邮箱/昵称">
+		  <input type="password" name="password" class="input-block-level" placeholder="密码">
+		  <label class="checkbox"><input type="checkbox" name="remember" value="记住我">记住我</label>
+		  <div><%=error%></div>
+		  <button class="btn btn-large btn-primary" type="submit">登录</button>
+		</form>
+	</div>
+</div>
+
+
+<script>
+$(function(){
+	$(".form-signin").keydown(function(e){
+		if (e.keyCode==13) {
+			$(this).submit();
+		};
+	})
+
+})
+	
+</script>
+<% script='' %>

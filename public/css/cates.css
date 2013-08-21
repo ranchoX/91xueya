@@ -1,0 +1,17 @@
+.cate-item{
+	width: 400px;
+	float:left;
+	margin: 10px 5px
+}
+.cate-pic{
+	display:block;
+	float:left;
+}
+.cate-pic img{
+	width: 100px;
+	height: 144px;
+}
+.cate-detail{
+	float:right;
+	width:275px;
+}

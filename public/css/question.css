@@ -1,0 +1,48 @@
+#question #question-main{
+	border: 1px solid #f1f1f1;
+	background-color: #fff;
+	padding: 20px 30px 10px;
+}
+
+.question-content{
+	margin:5px 0;
+}
+
+#question-answer-form{
+	margin:5px 0;
+	height: 152px;
+}
+
+#question-answer-form textarea{
+	margin: 0px 0px 3px;
+	width: 544px;
+	height: 112px;
+}
+
+
+#quetion-other-answers{
+	border: 1px solid #f1f1f1;
+	background-color: #fff;
+	padding: 20px 30px 10px;
+}
+
+.question-answer-item{
+	margin:5px 0px 10px;
+	border-bottom: 1px dashed #ccc;
+	padding-bottom: 15px;
+}
+.question-answer-item-content{
+	margin:5px 0;
+}
+.question-answer-btns{
+	height: 20px;
+}
+.pushAsk-container{
+	margin: 5px 0;
+	height: 133px;
+}
+.pushAsk-container textarea{
+	margin: 0px 0px 10px;
+	height: 73px;
+	width: 549px;
+}

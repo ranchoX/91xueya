@@ -1,0 +1,25 @@
+全部、经典、最新
+<% if(books&&books.length){%>
+<% for(var i=0;i<books.length;i++){%>
+<div class='book-item clearfix'>
+	<a class='book-pic' href='/subject/<%=books[i].attributes.id%>'><img class='img-polaroid' src='/img/book/book.jpg'></a>
+	<div class='book-info'>
+		<h4 class="book-name"><a href='/book/<%=books[i].attributes.id%>' class='book-name' target='_blank'><%=books[i].attributes.name%></a><%=books[i].get('studyState')%></h4>
+		<p class='gray book-author' title='<%=books[i].get('author')%>'>作者:<%=books[i].get('author')%></p>
+		<p class='gray'>出版年:<%=books[i].get('publishDate2')%></p>
+		<p class='gray'>正在学习(<%=books[i].get('studingPeopleNum')%>)/已学习(<%=books[i].get('studiedPeopleNum')%>)</p>
+		<!-- <p>分类:<a href='#find/<%=books[i].attributes.cateId%>' ><%=books[i].attributes.cateName%></a><p> -->
+		<p class='gray book-desc' title='<%=books[i].attributes.desc%>' ><%=books[i].attributes.desc%></p>
+		<div class="book-btn clearfix">
+			<%if(books[i].get('studyState')==''){%>
+			<a href='javascript:;' class='study-btn btn' data-bookId='<%=books[i].get('id')%>'>在读</a>
+			<a href='javascript:;' class='study-btn btn' data-bookId='<%=books[i].get('id')%>'>已读</a>
+			<%}%>
+		</div>
+	</div>
+	
+</div>
+<%}%>
+<%}else{%>
+暂时没有相关书籍.
+<%}%>

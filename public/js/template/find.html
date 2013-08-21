@@ -1,0 +1,19 @@
+<div>
+	<ul class='nav nav-tabs find-tag'>
+		<li <%=currentCate==undefined?'class="active"':''%>>
+			<a href='#find' >全部</a>
+		</li>
+		<% for (var i=0;i<cates.length;i++){%>
+		<li <%=currentCate==cates[i].id?'class="active"':''%>>
+			<a href='#find/<%= cates[i].id%>'>
+				<%= cates[i].name %></a>
+		</li>
+		<%}%>
+	</ul>
+</div>
+
+<div class='container'>
+	<div id="subjects">
+		
+	</div>
+</div>

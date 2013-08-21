@@ -1,0 +1,29 @@
+<%_.each(broadcasts,function(item){%>
+	<div class='broad-item clearfix'>
+		<%if(item.attributes.userId==0){%>
+			<a href="javascript:;" title='系统' class='user-pic'>
+				<img src="/img/cate/system.png" />
+			</a>
+		<%}else{%>
+			<a href="/<%item.attributes.userId%>" class='user-pic' title='<%=item.attributes.userName%>'>
+				<img src="/img/user/user.jpg" />
+			</a>
+			
+		<%}%>
+	
+		<div class='broad-detail'>
+			<h6><%=item.attributes.title%></h6>
+			<div class='broad-content'>
+				<%=item.attributes.content%>
+			</div>
+			<div>
+				<a href="<%=item.attributes.link%>">查看详细</a>
+			</div>
+			<div class='broad-btn'>
+				<span class='gray'><%=item.attributes.addDate%></span>
+			</div>
+		</div>
+	
+	</div>
+
+<%})%>
