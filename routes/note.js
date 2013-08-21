@@ -7,6 +7,7 @@ module.exports=function(app){
 			res.redirect('/login?returnUrl=/note/add');
 		}
 	});
+	/*test*/
 	app.get('/note/add',function(req,res){
 		var reffer='';
 		var subjectId=parseInt(req.query.subjectId);

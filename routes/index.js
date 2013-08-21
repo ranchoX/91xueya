@@ -80,6 +80,10 @@ module.exports=function(app){
 	      	}else{
 	      		req.session.user=null;
 	      	}
+	      	//以后按照数据的..
+	      	if (doc.username=='rancho'||doc.username=='Lycoria') {
+				req.role=1;
+			};
 	      	next();
 	      })
 	    }else{

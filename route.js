@@ -33,8 +33,7 @@ module.exports=function(app){
 	routes(app);
 	var route_user = require('./routes/user.js')
 	route_user(app);
-	var route_cate=require('./routes/cates.js');
-	route_cate(app);
+	
 	var route_subject=require('./routes/book.js');
 	route_subject(app);
 	var route_note=require('./routes/note.js');
@@ -60,6 +59,8 @@ module.exports=function(app){
 	apiBroadcast(app);
 
 	//admin
-	var admin=require('./routes/admin/book');
+	var admin=require('./routes/admin/index');
 	admin(app);
+	var route_cate=require('./routes/cates.js');
+	route_cate(app);
 }
