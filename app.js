@@ -30,7 +30,8 @@ global.util=util;
 var _=require('underscore');
 var app = express();
 global._=_;
-global.redis=redis.createClient();
+global.cache=redis.createClient();
+
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
@@ -78,7 +79,9 @@ app.use(function(err, req, res, next){
   util.error(err);
   res.send(500, { error: err });
 })
-/*当前属于分支xueya下吗*/
+cache.on("error", function (err) {
+        console.log("redis Error " + err);
+});
 // development only
 // if ('development' == app.get('env')) {
 //   app.use(express.errorHandler());

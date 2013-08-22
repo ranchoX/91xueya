@@ -94,6 +94,21 @@ function forceLogin(callback){
 		}
 		
 	};
+function quickQuestion(cateId){
+	forceLogin(function(){
+		if(window.questionView){
+			window.questionView.show();
+		}else{
+			var question=new app.models.Question();
+			question.set({
+				cateId:cateId
+			});
+			window.questionView=new app.views.QuestionView({model:question});
+			questionView.show();
+		}
+	})
+	
+}
 $(function(){
 	if (location.pathname=='/') {
 		$(".nav-index").addClass("active");

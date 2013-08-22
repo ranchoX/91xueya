@@ -43,7 +43,10 @@
                 <a href="#" class="dropdown-toggle " data-toggle="dropdown">关注中<b class="caret"> </b></a>
                 <ul class="dropdown-menu">
                   <%for(var i=0;i<attentionCates.length;i++){%>
-                     <li><a href="/<%=attentionCates[i].alias%>"><%=attentionCates[i].name%></a></li>
+                     <li>
+                        <img src="/img/cate/icon/<%=attentionCates[i].alias%>.png" />
+                        <a href="/<%=attentionCates[i].alias%>"><%=attentionCates[i].name%></a>
+                    </li>
                   <%}%>
                   <%if(attentionCates.length==0){%>
                     <li><span>还未关注任何领域</span></li>
@@ -68,7 +71,7 @@
                 <a href="#" class="dropdown-toggle " data-toggle="dropdown">功能<b class="caret"> </b></a>
                 <ul class="dropdown-menu">
                    <li><a href="/note/add">新建笔记</a></li>
-                   <li><a href="/question/add">新建疑问</a></li>
+                   <li><a href="javascript:;" onclick='quickQuestion()'>新建疑问</a></li>
                 </ul>
               </li>
               <li class='nav-message'> <a href="/message">消息</a></li>
@@ -133,14 +136,13 @@
   <div class='question-form hide'>
 
   </div>
+  <script type="text/javascript" src="/js/lib/bootstrap.js"></script>
+  <script type="text/javascript" src="/js/lib/jquery-ui-1.10.3.custom.js"></script>
+  <script type="text/javascript" src="/js/lib/jquery-ui-datepicker-zh.js"></script>
+  <script type="text/javascript" src="/js/lib/underscore-min.js"></script>
+  <script type="text/javascript" src="/js/lib/backbone-min.js"></script>
+  <script type="text/javascript" src="/js/layout.js"></script>
+  <script type="text/javascript" src="/js/app.js"></script>
+  <%-script%>
 </body>
-
-<script type="text/javascript" src="/js/lib/bootstrap.js"></script>
-<script type="text/javascript" src="/js/lib/jquery-ui-1.10.3.custom.js"></script>
-<script type="text/javascript" src="/js/lib/jquery-ui-datepicker-zh.js"></script>
-<script type="text/javascript" src="/js/lib/underscore-min.js"></script>
-<script type="text/javascript" src="/js/lib/backbone-min.js"></script>
-<script type="text/javascript" src="/js/layout.js"></script>
-<script type="text/javascript" src="/js/app.js"></script>
-<%-script%>
 </html>

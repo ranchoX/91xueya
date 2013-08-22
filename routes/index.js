@@ -29,8 +29,7 @@ var Question=require('./../models/question.js');
 			returnUrl="/";
 		};
 	};
-	console.log('returnUrl:'+returnUrl);
-	User.update({id:user.id},{"$set":{lastLoginDate:new Date()}}).exec();
+	User.update({id:user.id},{"$set":{lastLoginDate:Date.now()}}).exec();
 	res.redirect(returnUrl);
  }
 module.exports=function(app){
@@ -68,8 +67,7 @@ module.exports=function(app){
 	    }
 	    if (req.session.user) {
 	     
-	      User.findOne({id:req.session.user.id},function(err,doc){
-	      	if (err) {throw Error('user error')};
+	      User.findByUserId(req.session.user.id,function(doc){
 	      	if (doc) {
 	      		res.locals.attentionCates=doc.attentionCates;
 		      	res.locals.drafts=doc.drafts;
@@ -95,16 +93,25 @@ module.exports=function(app){
 	   
   })
 	app.all('/',  function(req, res){
-		var title='91学涯';
+		var title='91学涯'
+			,studyBooks=[];
 		if (req.cUser) {
 			title=req.cUser.username;
+
+			var readingBook=_.filter(req.cUser.studyBooks,function(item){
+				return item.state==0;
+			});
+			studyBooks=_.sortBy(readingBook,function(item){
+				return item.addDate;
+			})
+
 		};
 		/*test*/
 		var Recommend=require('./../models/recommend.js');
 		var recommend=new Recommend();
 		recommend.user(req.cUser,function(arr){
 			recommend.cate(function(cates){
-				res.render('index',{title:title,recommends:arr,hotCates:cates});
+				res.render('index',{title:title,recommends:arr,hotCates:cates,readingBook:studyBooks});
 			})
 		});
 	});

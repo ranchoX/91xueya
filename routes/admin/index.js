@@ -6,7 +6,9 @@ module.exports=function(app){
 		{"name":"书籍","link":"book"},
 		{"name":"分享中心","link":"share"},
 		{"name":"答疑","link":"question"},
-		{"name":"交流中心","link":"change"}
+		{"name":"rss","link":"rss"},
+		{"name":"入门教材","link":"course"},
+		{"name":"文件库","link":"file"}
 	];
 	app.all('/admin*',function(req,res,next){
 		if (req.role==1) {

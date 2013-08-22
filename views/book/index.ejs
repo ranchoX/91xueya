@@ -79,7 +79,7 @@
 				<%}%></div>
 			<br/>
 			<a href='/note/add?subjectId=<%=subject.id%>' class='subject-note'>写笔记</a>
-			<a href='javascript:;' class='subject-question'>有疑问？</a>
+			<a href='javascript:;' onclick='quickQuestion(<%=subject.cateId%>)' >有疑问？</a>
 		</div>
 		<% var studingPeople=_.filter(subject.studyPeoples,function(people){return people.state==0})%>
 		<%=studingPeople.length%>人正在学习..
@@ -111,4 +111,4 @@
 
 <div class='hide subject-study-dialog'>
 </div>
-<%script='<script src="/js/book-index.js"></script>'%>
+<%script='<script type="text/javascript" src="/js/book-index.js"></script>'%>

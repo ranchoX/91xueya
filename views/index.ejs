@@ -11,9 +11,11 @@
 			<%for(var i=0;i<recommends.length;i++){%>
 				<%if(recommends[i].subjectType=='book'){%>
 					<div class='book-item clearfix'>
-						<a class='book-pic' href='/book/<%=recommends[i].id%>'><img class='img-polaroid' src='<%=recommends[i].pic%>'></a>
+						<a class='book-pic' href='/book/<%=recommends[i].id%>'><img class='img-polaroid' src='<%=recommends[i].pic%>'>
+							
+						</a>
 						<div class='book-info'>
-							<h4 title='<%=recommends[i].name%>' class='book-name'><a  href='/book/<%=recommends[i].id%>' class='book-name' target='_blank'><%=recommends[i].name%></a></h4>
+							<h4 title='<%=recommends[i].name%>' class='book-name'><a  href='/book/<%=recommends[i].id%>' class='book-name' target='_blank'><%=recommends[i].name%></a><span><%=recommends[i].cateName%></span></h4>
 							<span class='gray book-author' title='<%=recommends[i].author%>'>作&nbsp;&nbsp;者:&nbsp;<%=recommends[i].author%></span>
 							<br/>
 							<span class='gray'>出版年:&nbsp;<%=recommends[i].publishDate2%></span>
@@ -33,7 +35,7 @@
 						</a>
 						<div class="note-detail">
 							<h4> 
-								<a href="/note/<%=recommends[i].id%>" target='_blank'><%=recommends[i].userName+'的《'+recommends[i].subjectName+'》笔记'%></a>
+								<a href="/note/<%=recommends[i].id%>" target='_blank'><%=recommends[i].userName+'的《'+recommends[i].subjectName+'》笔记'%></a><span><%=recommends[i].cateName%></span>
 							</h4>
 							<div class="note-content ">
 								<%-recommends[i].content%>
@@ -52,7 +54,7 @@
 					</a>
 					<div class="ques-detail">
 						<h4>
-							<i class='icon-question-sign'></i><a href="/question/<%=recommends[i].id%>" target='_blank'><%=recommends[i].title%></a>
+							<i class='icon-question-sign'></i><a href="/question/<%=recommends[i].id%>" target='_blank'><%=recommends[i].title%></a><span><%=recommends[i].cateName%></span>
 						</h4>
 					<!-- 	<div class="ques-ellipsis">
 							<%=recommends[i].ellipsis%>
@@ -83,11 +85,27 @@
 			<br/>
 			反馈请点<a href="/feedback" target='_blank'>这里</a>
 		</div>
+		<div id='readingBook'>
+			<h6>在读书籍</h6>
+			<ul class='nav'>
+				<%_.each(readingBook,function(item){%>
+					<li>
+						<a href="/book/<%=item.id%>">
+							<img src="<%=item.pic%>" style="width: 144px;">
+						</a>
+						<a href="/book/<%=item.id%>">
+							<%=item.name%>
+						</a>
+					</li>
+				<%})%>
+			</ul>
+		</div>
 		<div id='hotCates'>
 			<h6>热门专业</h6>
 			<ul class='nav'>
 				<%_.each(hotCates,function(item){%>
 					<li>
+						<img src="/img/cate/icon/<%=item.alias%>.png" style='width:30px;height:30px'/>
 						<a href="/<%=item.alias%>" target='_blank'><%=item.name%></a>
 					</li>
 				<%})%>

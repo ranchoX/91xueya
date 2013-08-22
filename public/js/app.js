@@ -283,8 +283,7 @@ $(function(){
 		urlRoot:'/api/question',
 		defaults:{
 			title:'',
-			content:'',
-			location:[]
+			content:''
 		},
 		initialize:function(){
 
@@ -386,7 +385,9 @@ $(function(){
 			var self=this;
 			app.template('question-form.html',function(template){
 				//var html= _.template(template,self.model);
-				self.$el.text(template);
+				//self.$el.text(template);
+				var html=_.template(template,{question:self.model.attributes});
+				self.$el.html(html);
 			})
 		},
 		submit:function(){
@@ -421,8 +422,7 @@ $(function(){
 		},
 		show:function(){
 			var self=this;
-			var html=_.template(this.$el.text(),{question:this.model.attributes});
-			this.$el.html(html);
+			
 			this.$el.dialog({
 				title:'描述问题',
 				width:420,

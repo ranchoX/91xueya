@@ -10,8 +10,15 @@
   </textarea>
 </div>
 <div class='question-bottom'>
+  分类：
+  <select style="width: 60px;">
+    <%for(var i=0;i<cates.length;i++){%>
+    <%console.log('ccc')%>
+    <option value='<%=cates[i].id%>' <%=question.cateId==cates[i].id?'selected=selected':''%>><%=cates[i].name%></option>
+    <%}%>
+  </select>
   位置:
-  <input value='' type='text' class='question-location span4' placeholder='url地址或者文章第几章节第几页' />
+  <input value='' type='text' style='width: 161px;' class='question-location span4' placeholder='url地址或者文章第几章节第几页' />
   <input class='pull-right submit' type='button' value='提交'/>
   
 </div>

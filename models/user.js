@@ -54,12 +54,27 @@ UserSchema.virtual('addDate2').get(function(date){
 	return date.getFullYear()+'年'+(date.getMonth()+1)+'月'+date.getDate()+'日';
 })
 UserSchema.statics.findByUserId=function(id,fn){
-	this.findOne({id:id}).select({password:0}).exec(function(err,user){
+	var key="webUser2"+id;
+	var self=this;
+	cache.get(key,function(err,data){
 		if (err) {
 			throw err;
 		}
-		fn(user);
+		if (data) {
+			console.log('cache data')
+			fn(JSON.parse(data));
+		}else{
+			console.log('db data')
+			self.findOne({id:id}).select({password:0,_id:0,__v:0}).exec(function(err,user){
+				if (err) {
+					throw err;
+				}
+				cache.set(key,JSON.stringify(user));
+				fn(user);
+			})
+		}
 	})
+	
 }
 UserSchema.statics.addStudyBooks=function(id,book){
 	var self=this;
@@ -77,9 +92,9 @@ UserSchema.statics.addStudyBooks=function(id,book){
 					console.log(re);
 				})
 			}else{
-				self.update({id:user.id},{"$set":{"studyBooks":book}},function(err){
+				self.update({id:user.id},{"$push":{"studyBooks":book}},function(err){
 					if (err) {
-						console.log('error');
+						console.log(err);
 					};
 				})
 			}

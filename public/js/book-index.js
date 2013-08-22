@@ -61,20 +61,19 @@ $(function(){
 		};
 		
 	})
-	var question=new app.models.Question();
-	question.set({
-		subjectId:subject.id,
-		subjectName:subject.name,
-		cateId:subject.cateId,
-		cateName:subject.cateName
-	});
-	var questionView=new app.views.QuestionView({model:question});
-	$(".subject-question").click(function(){
-		if (forceLogin()) {
-		questionView.show();
-						
-		};
-	})
+	// var question=new app.models.Question();
+	// question.set({
+	// 	subjectId:subject.id,
+	// 	subjectName:subject.name,
+	// 	cateId:subject.cateId,
+	// 	cateName:subject.cateName
+	// });
+	// var questionView=new app.views.QuestionView({model:question});
+	// $(".subject-question").click(function(){
+	// 	if (forceLogin()) {
+	// 		questionView.show();
+	// 	};
+	// })
 	$(".book-menus-more a").click(function(){
 		$(".book-menus-more").hide();
 		$(".book-menus-pick").show();
