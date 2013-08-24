@@ -2,34 +2,30 @@
 <div class="row" id='question'>
 	<div class="span8">
 		<form method="post" class="form-horizontal">
-			<input type='hidden' name='id' value='<%=ques.id%>'>
-			<legend>问题编辑</legend>
-			<div class="control-group">
-				<label class='control-label'>标题:</label>
-				<div class="controls">
-					<input type='text' value='<%=ques.title%>' name='title' id='title' />
-				</div>
+			<div>
+			  一句话描述您的疑问
+			  <br/>
+			  <input type='text' class='question-title span5' name='title' id='title' value='<%=ques.title%>' placeholder='请在这里概述您的问题' />
+			   <br/>
+			  详细描述
+			  <br/>
+			  <textarea style="margin: 0px 0px 10px; width: 366px; height: 83px;"  class='text-plugin question-content' placeholder='' name='content' id='content' > <%-ques.content%></textarea>
 			</div>
-			<div class="control-group">
-				<label class='control-label'>内容:</label>
-				<div class="controls">
-					<textarea name='content' id='content'> <%=ques.content%></textarea>
-				</div>
+			<div class='question-bottom'>
+			   位置:
+			   <input value='' type='text' style='width: 161px;' name='location' id='location' class='question-location span4' placeholder='url地址或者文章第几章节第几页' />
+			   <br/>
+			  分类：
+			  <select style="width: 60px;" id='cateId' name='cateId'>
+			    <%for(var i=0;i<cates.length;i++){%>
+			    <option value='<%=cates[i].id%>' <%=ques.cateId==cates[i].id?'selected=selected':''%>><%=cates[i].name%></option>
+			    <%}%>
+			  </select>
+			  书籍: <input value='book' id='question-books' class='hide' /> <span id='question-books-hide' class='btn '>未选中</span>
+			  <input class='pull-right submit' type='button' value='提交'/>
+			  
 			</div>
-			<div class="control-group">
-				<label class='control-label'>位置:</label>
-				<div class="controls">
-					<input type='text' name='location' id='location' value='<%=ques.location%>' />
-				</div>
-			</div>
-			<div class="control-group">
-				<div class="controls">
-					<input type='submit' class='btn' id='update' value='更新'>
-					<a href="/question/<%=ques.id%>">取消</a>
-				</div>
-				
-			</div>
-		</form>
+			</form>
 	</div>
 	<div class="span3 offset1"></div>
 </div>

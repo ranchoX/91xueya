@@ -1,5 +1,6 @@
 
 var Question=require('./../models/question.js');
+var Book=require('./../models/book.js');
 module.exports=function(app){
 	app.get('/question/:id',function(req,res){
 		Question.findOne({id:req.params.id},function(err,ques){
@@ -8,16 +9,18 @@ module.exports=function(app){
 			};
 			if (ques) {
 				var hadAnswer=false;
-				if (req.session.user) {
+				if (req.cUser) {
 					var answer= _.find(ques.answers,function(item){
-						return item.userId==req.session.user.id;
+						return item.userId==req.cUser.id;
 					})
 					if (answer) {
 						hadAnswer=true;
 					};
 				};
+				Book.findByBookId(ques.subjectId,function(book){
+					res.render('question/index',{title:ques.name+'-问题',ques:ques,hadAnswer:hadAnswer,book:book});	
+				})
 				
-				res.render('question/index',{title:'question',ques:ques,hadAnswer:hadAnswer});
 
 			}else{
 				res.redirect('/error?msg=id_not_find');

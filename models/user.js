@@ -61,10 +61,10 @@ UserSchema.statics.findByUserId=function(id,fn){
 			throw err;
 		}
 		if (data) {
-			console.log('cache data')
+			
 			fn(JSON.parse(data));
 		}else{
-			console.log('db data')
+			
 			self.findOne({id:id}).select({password:0,_id:0,__v:0}).exec(function(err,user){
 				if (err) {
 					throw err;

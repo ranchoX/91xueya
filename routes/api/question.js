@@ -18,7 +18,19 @@ module.exports=function(app){
 	})
 	app.post('/api/question',function(req,res){
 		if (req.session.user) {
-			var question=new Question(req.body);
+			var question=new Question();
+			var cate=_.find(cates,function(item){
+				return item.id==req.body.cateId;
+			})
+			if (!cate) {
+				res.json({ret:-1,msg:'分类没有找到'})
+			}
+			question.cateId=cate.id;
+			question.cateName=cate.name;
+			question.subjectId=req.body.subjectId;
+			question.title=req.body.title;
+			question.content=req.body.content;
+			question.location=req.body.location;
 			question.userId=req.session.user.id;
 			question.userName=req.session.user.username;
 			question.save(function(err,doc){

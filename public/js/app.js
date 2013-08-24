@@ -374,7 +374,7 @@ $(function(){
 		}
 	})
 	app.views.QuestionView=Backbone.View.extend({
-		el:'.question-form',
+		el:'#question-form',
 		initialize:function(){
 			this.render();
 		},
@@ -388,19 +388,59 @@ $(function(){
 				//self.$el.text(template);
 				var html=_.template(template,{question:self.model.attributes});
 				self.$el.html(html);
+				self.editor=KindEditor.create('.question-content',{
+					minWidth:'420px',
+					allowPreviewEmoticons:false,
+					items:['image','code','template']
+				})
+				$("#question-books-hide").click(function(){
+					$(this).hide();
+					$( "#question-books" ).show();
+					$( "#question-books" ).trigger("focus");
+				})
+				$( "#question-books" ).autocomplete({
+						delay: 500,
+				  		source: "/api/book/search",
+					    minLength: 2,
+					    select:function(event,ui){
+					    	$("#question-books-hide").text(ui.item.value).show();
+					    	$(this).hide();
+					    	self.model.set('subjectId',ui.item.id);
+					    },
+				      	response: function( event, ui ) {
+				      		_.each(ui.content,function(item){
+				      			item.label=item.name;
+				      			item.value=item.name;
+				      		})
+				      		if (ui.content.length==0) {
+				      			self.model.set('subjectId',0);
+				      		};
+				      	}
+				}).blur(function(){
+					$(this).hide();
+					if (self.model.get('subjectId')==0) {
+						$("#question-books-hide").text("未选中");
+					};
+					$("#question-books-hide").show();
+					
+				});
+				$("#question-cate").change(function(){
+					self.model.set('cateId',$(this).val());
+					$( "#question-books" ).autocomplete( "option", "source", "/api/book/search?cateId="+$(this).val());
+				})
+				$("#question-cate").change();
 			})
 		},
 		submit:function(){
 			var self=this;
 			var title=this.$el.find(".question-title").val();
-			var content=this.$el.find(".question-content").val();
+			var content=self.editor.html();
 			var location=this.$el.find(".question-location").val();
 			this.model.set({
 				title:title,
 				content:content,
 				location:location
 			});
-			this.model.unset('menus');
 			if (!this.model.isValid()) {
 				alert(this.model.validationError);
 				return false;

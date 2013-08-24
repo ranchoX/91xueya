@@ -6,7 +6,7 @@ module.exports=function(app){
 		{"name":"书籍","link":"book"},
 		{"name":"分享中心","link":"share"},
 		{"name":"答疑","link":"question"},
-		{"name":"rss","link":"rss"},
+		{"name":"优秀rss","link":"rss"},
 		{"name":"入门教材","link":"course"},
 		{"name":"文件库","link":"file"}
 	];

@@ -77,15 +77,18 @@ module.exports=function(app){
 		
 	})
 	app.get('/api/book/search',function(req,res){
-		if (req.query.w) {
-			var regex=new RegExp(req.query.w);
-			Book.findOne({name:regex},function(err,doc){
+		if (req.query.term&&req.query.cateId) {
+			var cateId=parseInt(req.query.cateId);
+			var query=Book.find({name:{"$regex":req.query.term,"$options":'i'},cateId:cateId});
+			query.select({id:1,name:1,_id:0});
+			query.limit(10);
+			query.exec(function(err,doc){
 				if (err) {throw err}
 				res.json(doc);
 			})
 		}
 		else{
-			res.json(null);
+			res.json([]);
 		}
 	})
 }

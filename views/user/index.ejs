@@ -7,19 +7,18 @@
 				<h1><%=user.username%></h1>
 				<ul class='nav nav-pills'>
 					<li><a href='/u<%=user.id%>'>主页</a></li>
-					<li><a href='/u<%=user.id%>/note'>笔记</a></li>
+					<li><a href='/u<%=user.id%>/note'>文章</a></li>
 					<li><a href='/u<%=user.id%>/question'>问题</a></li>
-					<li><a href='/u<%=user.id%>/reading'>在读</a></li> 
-					<li><a href='/u<%=user.id%>/readied'>读过</a></li>
+					<li><a href='/u<%=user.id%>/book'>书籍</a></li> 
 				</ul>
 			</div>
 		</div>
 		<div class="reading">
-			<h3>在读  · · ·  ( <%=user.studingBooks.length%>本 )</h6>
+			<h3>在读  · · ·  ( <%=user.studyBooks.length%>本 )</h6>
 			<ul class="nav nav-pills">
-			<%for(var i=0;i<user.studingBooks.length;i++){%>
+			<%for(var i=0;i<user.studyBooks.length;i++){%>
 				<li>
-					<a href="/book/<%=user.studingBooks[i].bookId%>" class='book-pic'> <img src='<%=user.studingBooks[i].pic%>' alt='<%=user.studingBooks[i].bookName%>' /><%=user.studingBooks[i].bookName%></a>
+					<a href="/book/<%=user.studyBooks[i].id%>" class='book-pic'> <img src='<%=user.studyBooks[i].pic%>' alt='<%=user.studyBooks[i].name%>' /><%=user.studyBooks[i].name%></a>
 				</li>
 			<%}%>
 			</ul>

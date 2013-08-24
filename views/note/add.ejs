@@ -7,18 +7,12 @@
 
 </script>
 <div class="row">
-<div class="span10">
+<div class="span8">
 <form class='form-horizontal' id='form-note' method='post'>
 	<legend><%=_.isUndefined(note.id)?'写笔记':'修改笔记'%></legend>
+	
 	<div class="control-group">
-		<label class="control-label">图书链接:</label>
-		<div class="controls"> 
-			<input type='text' id="link" <%=_.isUndefined(note.id)?'':'disabled=disabled'%> value='<%=note.subjectId!=undefined?("http://91xueya.com/book/"+note.subjectId):""%>'/>
-			<span id='name'><%=isUndefined(note.subjectName,'请张贴地址')%></span>
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">章 节 名:</label>
+		<label class="control-label">标题 :</label>
 		<div class="controls"> 
 			<input type='text' value='<%=isUndefined(note.chapterName)%>' name='chapterName' id='chapterName'>
 		</div>
@@ -56,7 +50,17 @@
 	</div>
 </form>
 </div>
-<div class='span2'>
+<div class='span3 offset1'>
+	<div class="control-group">
+		<label class="control-label">图书链接:</label>
+		<div class="controls"> 
+			<input type='text' id="link" <%=_.isUndefined(note.id)?'':'disabled=disabled'%> value='<%=note.subjectId!=undefined?("http://91xueya.com/book/"+note.subjectId):""%>'/>
+			<span id='name'><%=isUndefined(note.subjectName,'请张贴地址')%></span>
+		</div>
+	</div>
+	<div >
+		<textarea>添加标签，用逗号或者回车分割</textarea>
+	</div>
 	<%if(note.modifies.length){%>
 		修改记录
 		<%for(var i=0;i<note.modifies.length;i++){%>
@@ -71,7 +75,5 @@
 	<%}%>
 </div>
 </div>
-<link type='text/css' rel='stylesheet' href='/js/lib/kindeditor-4.1.7/themes/default/default.css' />
-<script src="/js/lib/kindeditor-4.1.7/kindeditor-min.js"></script>
-<script src="/js/lib/kindeditor-4.1.7/lang/zh_CN.js"></script>
+
 <%script='<script src="/js/note-add.js"></script>'%>

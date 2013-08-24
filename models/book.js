@@ -86,14 +86,15 @@ BookSchema.statics.findSimpleById=function(id,fn){
 BookSchema.statics.findByBookId=function(id,fn){
 	var key="bookId"+id;
 	var self=this;
-	redis.get(key,function(err,book){
+	cache.get(key,function(err,book){
 		if (book) {
-			fn(book);
+			fn(JSON.parse(book));
 		}else{
 			self.findOne({id:id},function(err,doc){
 				if (err) {
 					utils.error(err);
 				}
+				cache.set(key,JSON.stringify(doc));
 				fn(doc);
 			})
 		}

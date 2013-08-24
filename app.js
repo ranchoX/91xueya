@@ -18,9 +18,11 @@ var express = require('express')
     key:'91xueya',
     cookieSecret:'Lycoria$%^&&rancho',
     db:'microblog'
-  }; 
+  }
+  ,fs=require('fs'); 
 
-
+var accessLogfile=fs.createWriteStream('access.log', {flags:'a'});
+var errorLogfile=fs.createWriteStream('error.log', {flags:'a'});
 var uri='mongodb://localhost/'+setting.db;
 global.db=mongoose.connect(uri);
 var idGenerator=require('./models/idGenerator');
@@ -38,7 +40,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.favicon());
 
-app.use(express.logger('dev'));
+app.use(express.logger({stream:accessLogfile}));
 app.use(express.bodyParser({
   uploadDir:__dirname+'/tmp'
 }));
@@ -75,8 +77,8 @@ app.use(function(err, req, res, next){
   // if an error occurs Connect will pass it down
   // through these "error-handling" middleware
   // allowing you to respond however you like
-  console.log(err);
-  util.error(err);
+  var meta='['+new Date()+']'+req.url+'\n';
+  errorLogfile.write(meta+err.stack+'\n');
   res.send(500, { error: err });
 })
 cache.on("error", function (err) {

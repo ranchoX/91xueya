@@ -51,8 +51,7 @@ var QuestionSchema=new Schema({
 	cateId:Number,
 	cateName:String,
 	subjectId:{type:Number},
-	subjectName:{type:String},
-	acceptIndex:{type:Number},
+	acceptIndex:Object,
 	addDate:{type:Date,default:Date.now()}
 })
 QuestionSchema.pre('save',function(next){

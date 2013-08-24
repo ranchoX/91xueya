@@ -5,7 +5,9 @@
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="/css/font-awesome.css">
   <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.custom.css">
+   <link type='text/css' rel='stylesheet' href='/js/lib/kindeditor-4.1.7/themes/default/default.css' />
    <link rel="stylesheet" type="text/css" href="/css/layout.css">
+  
 <style type="text/css">
       body {
         padding-top: 60px;
@@ -127,13 +129,13 @@
       </div>
   </div>
   <%}%>
-  <div class="tips-close hide">
+  <div id="tips-close" class='hide'>
     <span>你确定要删除吗？</span>
   </div>
-  <div class="tips-ok hide">
+  <div id="tips-ok" class="hide">
     <span>提交成功</span>
   </div>
-  <div class='question-form hide'>
+  <div id='question-form' class='hide'>
 
   </div>
   <script type="text/javascript" src="/js/lib/bootstrap.js"></script>
@@ -141,6 +143,8 @@
   <script type="text/javascript" src="/js/lib/jquery-ui-datepicker-zh.js"></script>
   <script type="text/javascript" src="/js/lib/underscore-min.js"></script>
   <script type="text/javascript" src="/js/lib/backbone-min.js"></script>
+  <script src="/js/lib/kindeditor-4.1.7/kindeditor-min.js"></script>
+  <script src="/js/lib/kindeditor-4.1.7/lang/zh_CN.js"></script>
   <script type="text/javascript" src="/js/layout.js"></script>
   <script type="text/javascript" src="/js/app.js"></script>
   <%-script%>

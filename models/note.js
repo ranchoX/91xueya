@@ -5,7 +5,7 @@ var NoteSchema=new Schema({
 	subjectName:{type:String,require:true},
 	cateId:{type:Number,require:true},
 	cateName:String,
-	chapterName:{type:String,require:true},
+	title:{type:String,require:true},
 	userId:{type:Number,require:true},
 	userName:{type:String,require:true},
 	content:{type:String,require:true},
