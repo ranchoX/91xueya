@@ -2,4 +2,82 @@
 	background:#fff;
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
+	padding: 16px 24px;
+}
+#broad-from{
+	
+}
+#broad-from textarea{
+	margin: 0px 0px 10px;
+    width: 553px;
+    height: 80px;
+}
+#broad-items{
+	
+}
+.broad-item{
+	margin-bottom: 0px;
+	margin-top: 15px;
+}
+.broad-item .broad-detail{
+	margin-left:70px;
+	border-bottom: 1px solid #eeebe7;
+	padding-bottom: 20px;
+}
+.broad-item .broad-btn{
+	margin-top: 5px;
+}
+.broad-detail h6{
+	margin:0;
+}
+
+/*book*/
+.book-item{
+	margin-bottom: 0px;
+	margin-top: 15px;
+}
+.book-item .book-pic{
+	display:block;
+	float: left;
+	height: 160px;
+	margin: 5px 15px 5px 0;
+}
+.book-item .book-pic img{
+	width:102px;
+	height: 144px;
+}
+.book-item .book-info{
+	margin-left:110px;
+	border-bottom: 1px solid #eeebe7;
+	padding-bottom: 20px;
+}
+
+.book-item .book-info p{
+	margin:0;
+}
+.book-item .book-desc{
+	text-overflow:ellipsis;
+	overflow: hidden;
+	height: 56px;
+}
+.book-item .book-author,.book-item .book-name{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 450px;
+	overflow: hidden;
+}
+.book-item .book-btn{
+	padding-right: 10px;
+	text-align: right;
+	margin-top: 5px;
+}
+.book-item .book-btn a{
+	border: 1px solid;
+	padding: 2px 5px;
+	background-color: #ff2;
+	border-radius: 5px;
+	margin-right: 3px;
+}
+.book-item .book-btn a:hover{
+	background-color: #f2f;
 }

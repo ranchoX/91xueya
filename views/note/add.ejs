@@ -1,39 +1,30 @@
 <%style=''%>
 <script type="text/javascript">
 	var note={
-		id:<%=note.id%>,
-		subjectId:<%=note.subjectId%>,
+		id:<%=note.id%>
 	};
-
+	var subjectId=<%=note.subject?note.subject.id:0%>;
 </script>
 <div class="row">
 <div class="span8">
-<form class='form-horizontal' id='form-note' method='post'>
-	<legend><%=_.isUndefined(note.id)?'写笔记':'修改笔记'%></legend>
+<form class='' id='form-note' method='post'>
+	<legend>编辑文字</legend>
 	
 	<div class="control-group">
-		<label class="control-label">标题 :</label>
+		<label class="control-label">标题 (可不填):</label>
 		<div class="controls"> 
-			<input type='text' value='<%=isUndefined(note.chapterName)%>' name='chapterName' id='chapterName'>
+			<input type='text' value='<%=isUndefined(note.title)%>' name='title' id='title'>
 		</div>
 	</div>
 	<div class="control-group">
-		<label class="control-label">笔记内容:</label>
+		<label class="control-label">内容:</label>
 		<div class="controls"> 
 			<textarea  id="content" name='content' ><%=isUndefined(note.content)%></textarea>
 		</div>
 	</div>
-	<%if(!_.isUndefined(note.id)){%>
-	<div class="control-group">
-		<label class="control-label">修改注释:</label>
-		<div class="controls"> 
-			<textarea  id="modifyContent" name='modifyContent' ></textarea>
-		</div>
-	</div>
-	<%}%>
+
 	<div class="control-group">
 		<div class="controls">
-			<%console.log(note.state)%>
 			<%if(_.isUndefined(note.id)){%>
 				<input type='button' class='note-submit' data-state=0 value='保存草稿'/>
 				<input type='button' class='note-submit' data-state=1 value='发表'/>
@@ -44,35 +35,62 @@
 				<%}%>
 			<%}%> 
 			
-			<a href='javascript:;' class='goback'>取消</a>
+			<a href='<%=reffer%>' class='goback'>取消</a>
 			<span id='tips'></span>
 		</div>
 	</div>
 </form>
 </div>
 <div class='span3 offset1'>
+	
 	<div class="control-group">
-		<label class="control-label">图书链接:</label>
+		<label class="control-label">分享至：</label>
 		<div class="controls"> 
-			<input type='text' id="link" <%=_.isUndefined(note.id)?'':'disabled=disabled'%> value='<%=note.subjectId!=undefined?("http://91xueya.com/book/"+note.subjectId):""%>'/>
-			<span id='name'><%=isUndefined(note.subjectName,'请张贴地址')%></span>
+			<select id='note-cate'>
+				<option value='0' >个人随笔</option>
+				<%_.each(cates,function(item){%>
+				<option value='<%=item.id%>' <%=item.id==note.cateId?'selected=selected':''%>><%=item.name%></option>
+				<%})%>
+			</select>
 		</div>
 	</div>
-	<div >
-		<textarea>添加标签，用逗号或者回车分割</textarea>
+	<div class="control-group">
+		<label class="control-label">关联书籍(可以不选择):</label>
+		<div class="controls"> 
+			<select id='refbook'>
+			</select>
+		</div>
 	</div>
+	<div class="control-group  bookchapter <%=_.isUndefined(note.subject)?"hide":""%>">
+		<label class="control-label">章节(可不填):</label>
+		<div class="controls"> 
+			<input  id='bookchapter' value='<%=note.subject?note.subject.chapter:''%>' /> 
+		</div>
+	</div>
+
+	
+	<!-- <div >
+		<textarea>添加标签，用逗号或者回车分割</textarea>
+	</div> -->
 	<%if(note.modifies.length){%>
 		修改记录
 		<%for(var i=0;i<note.modifies.length;i++){%>
 			<div>
-				<%=toDate(note.modifies[i].addDay)%>
+				<%=toDate(note.modifies[i].addDate)%>
 				<br/>
 				<%=note.modifies[i].content%>
 			</div>
 		<%}%>
-	<%}else{%>
-		tips
 	<%}%>
+	<%if(note.id){%>
+	<div class="control-group">
+		<label class="control-label">修改注释:</label>
+		<div class="controls"> 
+			<textarea  id="modify" name='modify' ></textarea>
+		</div>
+	</div>
+	<%}%>
+
 </div>
 </div>
 

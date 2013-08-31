@@ -2,7 +2,7 @@ $(function(){
 	$(".note-delete").click(function(){
 		tips_close(function(){
 			$.ajax({
-				url:'/api/note/'+date.id,
+				url:'/api/note/'+note.id,
 				type:'delete',
 				success:function(re){
 					if (re.ret==0) {
@@ -22,7 +22,20 @@ $(function(){
 			commentNoteView.render();
 		}});
 	};
-	
+	$("#note-publish").click(function(){
+		$.ajax({
+			url:'/api/note/publish',
+			data:{id:note.id},
+			type:'post',
+			success:function(re){
+				if (re.ret==0) {
+					alert('发布成功');
+				}else{
+					alert(re.msg);
+				}
+			}
+		})
+	})
 	
 
 })

@@ -33,66 +33,8 @@ var Question=require('./../models/question.js');
 	res.redirect(returnUrl);
  }
 module.exports=function(app){
-	app.all('/*',function(req,res,next){
-	    res.locals._=_;
-	    res.locals.cates=cates;
-	    res.locals.toDate=function(date){
-	    	return date.getFullYear()+'年'+date.getMonth()+'月'+date.getDay()+'日';
-	    }
-	    res.locals.isUndefined=function(str,replace){
-	    	if (!replace) {
-	    		replace='';
-	    	};
-	    	return str==undefined?replace:str;
-	    }
-	    res.locals.getRowStr=function(str,num){
-	    	var charNum=0;
-	    	var rowNum=0;
-	    	for (var i = 0; i < str.length; i++) {
-	    		if(str[i]=='\n'){
-	    			charNum=0;
-	    			rowNum++;
-	    		}
-	    		else if (charNum==80) {
-	    			rowNum++;
-	    			charNum=0;
-	    		}else{
-	    			charNum++;
-	    		}
-	    		if (rowNum==num) {
-	    			return str.substring(0,i)+'....';
-	    		};
-	    	};
-	    	return str;
-	    }
-	    if (req.session.user) {
-	     
-	      User.findByUserId(req.session.user.id,function(doc){
-	      	if (doc) {
-	      		res.locals.attentionCates=doc.attentionCates;
-		      	res.locals.drafts=doc.drafts;
-		      	res.locals.userId=req.session.user.id;
-	      		res.locals.username=req.session.user.username;
-		      	req.cUser=doc;
-	      	
-	      	}else{
-	      		req.session.user=null;
-	      	}
-	      	//以后按照数据的..
-	      	if (doc.username=='rancho'||doc.username=='Lycoria') {
-				req.role=1;
-			};
-	      	next();
-	      })
-	    }else{
-	    	 res.locals.userId=0;
-	    	 res.locals.username='';
-	    	 next();
-	    }
-	   
-	   
-  })
-	app.all('/',  function(req, res){
+	
+	app.get('/',  function(req, res){
 		var title='91学涯'
 			,studyBooks=[];
 		if (req.cUser) {
@@ -106,14 +48,20 @@ module.exports=function(app){
 			})
 
 		};
+
 		/*test*/
-		var Recommend=require('./../models/recommend.js');
-		var recommend=new Recommend();
-		recommend.user(req.cUser,function(arr){
-			recommend.cate(function(cates){
-				res.render('index',{title:title,recommends:arr,hotCates:cates,readingBook:studyBooks});
+		var Recommend=require('./../bll/recommend.js');
+		Recommend.note(req.cUser,15,function(arr){
+			console.log('1');
+			Recommend.cate(req.cUser,2,function(cates){
+				console.log('2');	
+				Recommend.book(req.cUser,5,function(book){
+					console.log('3');
+					res.render('index',{title:title,recommends:arr,hotCates:cates,readingBook:studyBooks,recommendBooks:book});
+				})
 			})
-		});
+		})
+		
 	});
 	app.get('/reg',function(req,res){
 		res.render('reg',{title:'注册-要学涯',user:{username:"",email:""},error:''});

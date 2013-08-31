@@ -57,10 +57,13 @@ module.exports=function(app){
 	apiFile(app);
 	var apiBroadcast=require('./routes/api/broadcast');
 	apiBroadcast(app);
-
+	var apiRecommend=require('./routes/api/recommend');
+	apiRecommend(app);
 	//admin
 	var admin=require('./routes/admin/index');
 	admin(app);
+	var plan=require('./routes/plan/rssRead');
+	plan(app);
 	var route_cate=require('./routes/cates.js');
 	route_cate(app);
 }

@@ -1,6 +1,8 @@
-<textarea></textarea>
-<br/>
-<input type='button' value='发表'>
+<div id='broad-from'>
+	<textarea></textarea>
+	<input type='button' class='pull-right' value='发表'>
+</div>
+<div class='clearfix' id='broad-items'>
 <%_.each(broadcasts,function(item){%>
 	<div class='broad-item clearfix'>
 		<%if(item.attributes.userId==0){%>
@@ -17,10 +19,7 @@
 		<div class='broad-detail'>
 			<h6><%=item.attributes.title%></h6>
 			<div class='broad-content'>
-				<%=item.attributes.content%>
-			</div>
-			<div>
-				<a href="<%=item.attributes.link%>">查看详细</a>
+				<%-item.attributes.content%>
 			</div>
 			<div class='broad-btn'>
 				<span class='gray'><%=item.attributes.addDate%></span>
@@ -30,3 +29,4 @@
 	</div>
 
 <%})%>
+</div>

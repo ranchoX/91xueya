@@ -1,0 +1,17 @@
+<div>
+	<div>
+		<label>在读<input type='radio' value='0' name='studyType' <%=studyType==0?'selected=selected':''%>></label>
+		<label>已读<input type='radio' value='1' name='studyType' <%=studyType==1?'selected=selected':''%>></label>
+	</div>
+	<div>
+		<label>开始时间:<input type='text' id='study-bdate' value='<%=today%>'></label>
+		<%if(studyType==1){%>
+		<label>结束时间<input type='text' id='study-edate' value='<%=today%>'></label>
+		<%}%>
+	</div>
+	<div>
+分享到: <label><%=cateName%>广播 <input type='checkbox' checked> </label>
+去绑定新浪、腾讯等微博
+	<input type='botton' value='保存' id='study-save'>
+	</div>
+</div>

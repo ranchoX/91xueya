@@ -1,14 +1,36 @@
-.recommend-items{
+#recommend-items{
 	/*background-color: #000;*/
 }
-#feedback-tips{
-	background: #f4f4ec;
-	padding: 10px;
-	margin-bottom: 20px;
-	word-wrap: break-word;
-	margin-top: 12px;
-}
+#hotCates{
 
+}
+.cate-item{
+	width:290px;
+	float:left;
+	margin: 10px 10px;
+}
+.cate-pic{
+	display: block;
+	float: left;
+}
+.cate-info{
+margin-left: 10px;
+line-height: 20px;
+height: 124px;
+color: #aeaeae;
+float: left;
+overflow: hidden;
+width: 156px;
+}
+.cate-button{
+	text-align: right;
+}
+.cate-pic img{
+	width:124px;
+	height: 124px;
+	border-radius: 4px;
+	box-shadow: 1px 0 1px #E5E8E8;
+}
 #loadMore{
 	text-align: center;
 	margin-top: 20px;

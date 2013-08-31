@@ -21,6 +21,7 @@ var UserSchema=new Schema({
 		name:{type:String},
 		pic:{type:String},
 		state:{type:Number},
+		cateId:{type:Number},
 		addDate:{type:Date,default:Date.now()}
 	}],
 	drafts:[{
@@ -98,7 +99,7 @@ UserSchema.statics.addStudyBooks=function(id,book){
 					};
 				})
 			}
-			
+			cache.del("webUser2"+id);
 		}
 	})
 }
@@ -107,6 +108,7 @@ UserSchema.statics.removeStudyBooks=function(id,bookId){
 		if (err) {
 			console.error(err);
 		};
+		cache.del("webUser2"+id);
 	})
 }
 UserSchema.statics.addDraft=function(id,link,name,plat,dataId){
@@ -119,6 +121,7 @@ UserSchema.statics.addDraft=function(id,link,name,plat,dataId){
 								if (err) {
 									util.error(err);
 								};
+								cache.del("webUser2"+id);
 							});
 }
 UserSchema.statics.removeDraft=function(id,plat,dataId){
@@ -126,6 +129,7 @@ UserSchema.statics.removeDraft=function(id,plat,dataId){
 								if (err) {
 									util.error(err);
 								};
+								cache.del("webUser2"+id);
 							});
 }
 module.exports=db.model('User',UserSchema);

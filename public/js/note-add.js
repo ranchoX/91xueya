@@ -4,84 +4,91 @@ KindEditor.ready(function(K){
 		width:'520px',
 		height:'230px',
 		allowPreviewEmoticons:false,
-		items:['bold','underline','strikethrough','justifyleft','justifycenter','justifyright','image','anchor','insertorderedlist','indent','outdent','code','fullscreen','preview']
+		uploadJson : '/api/file/image/editor',
+        fileManagerJson : '../asp/file_manager_json.asp',
+        allowFileManager : true,
+		items:['bold','underline','strikethrough','justifyleft','justifycenter','justifyright','image','insertfile','anchor','link','insertorderedlist','indent','outdent','code','fullscreen']
 	})
 })
 $(function(){
-	$("#form-note").keydown(function(e){
-		if (e.keyCode==13) {
-			return false;
-		};
-	})
-	$("#subjectName").val($("#name").text());
-	$("#link").change(function(){
-		var self=this;
-		var matchs=/http:\/\/91xueya.com\/book\/(\d+)/.exec($(this).val());
-		$("#subjectId").val(0);
-		$("#chapters option").remove();
-		if (matchs&&matchs.length) {
-			var id=matchs[1];
-			$.ajax({
-				url:'/api/book/'+id,
-				success:function(re){
-					if (re.ret==0) {
-						$("#name").text(re.data.name);
-						note.subjectId=id;
+	var View=Backbone.View.extend({
+		el:'body',
+		events:{
+			"change #note-cate":"changeCate",
+			"click .note-submit":"submit2",
+			"change #refbook":"changeBook"
+		},
+		initialize:function(){
+			 var self=this;
+		},
+		changeCate:function(e){
+			var self=this;
+			var cateId=$(e.currentTarget).val();
+			$.get('/api/user/readbook?cateId='+cateId,function(re){
+				if (re.ret==0) {
+					//self.$el.find("#refbook").children().remove();
+					if (re.data.length>0) {
+						var html='<option value=0 >可以不选择</option>';
+						_.each(re.data,function(item){
+							html+='<option value="'+item.id+'" '+(subjectId==item.id?"selected=selected":"")+'>'+item.name+'</option>';
+						})
+						self.$el.find("#refbook").html(html);
+					}else{
+						self.$el.find("#refbook").html('<option value=0 >该分类下您暂未读过任何书籍</option>');
 					}
-					else{
-						$("#name").text(re.msg);
-						delete note.subjectId;
-					}
-				},
-				error:function(err){
-					$("#name").text('submit error');
+					
+				}else{
+
 				}
 			})
-		}
-		else{
-			$("#name").text('格式错误');
-		}
-		
-	})
-	$(".note-submit").click(function(){
-		
-		if (!note.subjectId) {
-			$("#name").text('未找到对应的图书')
-			return false;
-		}
-		note.chapterName=$.trim($("#chapterName").val());
-		if (note.chapterName=='') {
-			$("#tips").text('位置');
-			return false;
-		};
-		note.content=editor.html();
-		if (note.content=='') {
-			$("#tips").text('请填写笔记');
-			return false;
-		};
-		var type="post";
-		var url='/api/note';
-		if(note.id){
-			type="put";
-			url=url+'/'+note.id;
-			note.modifyContent=$("#modifyContent").val();
-		}
-		var state=$(this).attr("data-state");
-		note.state=state;
-		$.ajax({
-			url:url,
-			data:note,
-			type:type,
-			dataType:'json',
-			success:function(re){
-				if (re.ret==0) {
-					location.href='/note/'+re.data;
-				}
-				else {
-					console.log('submit error');
-				}
+		},
+		submit2:function(e){
+			var self=e.currentTarget;
+			var content=$.trim(editor.html());
+			if (content==''||$.trim(editor.text())=='') {
+				alert('内容需要填写的');
+				return;
+			};
+			if (!parseInt(this.$el.find("#note-cate").val())) {
+				alert('没有读取到分享到的领域');
+				return ;
+			};
+			this.model.set('state',$(self).attr("data-state"));
+			this.model.set('content',content);
+			if (this.$el.find("#title").val()) {
+				this.model.set('title',this.$el.find("#title").val());
+			};
+			this.model.set('cateId',this.$el.find("#note-cate").val());
+			this.model.set('cateName',this.$el.find("#note-cate option:selected").text());
+			if (parseInt(this.$el.find("#refbook").val())) {
+				this.model.set('subjectId',this.$el.find("#refbook").val());
+				//this.model.set('subjectName',this.$el.find("#refbook option:selected").text()); 
+			};
+			if (this.$el.find("#bookchapter").val()) {
+				this.model.set('chapter',this.$el.find("#bookchapter").val());
+			};
+			if (this.$el.find("#modify").val()) {
+				this.model.set('modify',this.$el.find("#modify").val());
+			};
+			
+			this.model.save({},{success:function(re){
+				location.href='/note/'+ re.changed.data;
+			},error:function(){
+				alert('error');
+			}})
+		},
+		changeBook:function(e){
+			var self=e.currentTarget;
+			var bookId=parseInt($(self).val());
+			if (bookId) {
+				this.$el.find(".bookchapter").show();
+			}else{
+				this.$el.find(".bookchapter").hide();
 			}
-		})
+		}
+		
 	})
-	
+	var model=new  app.models.Note(note);
+	var view=new View({model:model});
+	$("#note-cate").change();
 })

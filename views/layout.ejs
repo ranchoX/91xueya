@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title><%=title%></title>
+	<title><%=title%>-91学呀</title>
+  <meta name="keywords" content="<%=keywords%>" />
+  <meta name="description" content="<%=descript%>" />
+
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="/css/font-awesome.css">
   <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.custom.css">
    <link type='text/css' rel='stylesheet' href='/js/lib/kindeditor-4.1.7/themes/default/default.css' />
    <link rel="stylesheet" type="text/css" href="/css/layout.css">
-  
+<meta name="baidu-site-verification" content="5e395bde2df1323add47e4198ff9d61f"/>
 <style type="text/css">
       body {
         padding-top: 60px;
@@ -19,7 +22,8 @@
     <script>
       var user={
         id: <%=userId%>,
-        name:'<%=username%>'
+        name:'<%=username%>',
+        attentionCates:<%=util.inspect(attentionCates)%>
       }
       var cates=[<%=cates%>];
     </script>
@@ -29,7 +33,7 @@
       <div class="navbar-inner">
         <div class="container">
          
-          <a class="brand" href="/">91学涯</a>
+          <a class="brand" href="/">91学呀</a>
           <form class='form-search navbar-form pull-left'>
             <div class="input-append">
                <input type='text' placeholder='你想学习什么？' />
@@ -46,8 +50,11 @@
                 <ul class="dropdown-menu">
                   <%for(var i=0;i<attentionCates.length;i++){%>
                      <li>
-                        <img src="/img/cate/icon/<%=attentionCates[i].alias%>.png" />
+                      <div  class='dropdown-img'>
+                         <a href="/<%=attentionCates[i].alias%>"><img src="/img/cate/icon/<%=attentionCates[i].alias%>.png"  /></a>
                         <a href="/<%=attentionCates[i].alias%>"><%=attentionCates[i].name%></a>
+                      </div>
+                        
                     </li>
                   <%}%>
                   <%if(attentionCates.length==0){%>
@@ -58,11 +65,20 @@
               <li class="dropdown nav-note">
                <a href="#" class="dropdown-toggle " data-toggle="dropdown">待发布<b class="caret"> </b></a>
                 <ul class="dropdown-menu">
-                   <%for(var i=0;i<drafts.length;i++){%>
-                     <li>pic<a href="<%=drafts[i].link%>"><%=drafts[i].name%></a></li>
+                   <%for(var i=0;i<drafts.length&&i<6;i++){%>
+                     <li>
+                      <div class='dropdown-img'>
+                           <a href="<%=drafts[i].link%>"><img src="/img/<%=drafts[i].plat%>.png"></a>
+                          <a href="<%=drafts[i].link%>"><%=drafts[i].name%></a>
+                      </div>
+                    </li>
                   <%}%>
                   <%if(drafts.length==0){%>
                   <li >暂无任何待发布内容</li>
+                  <%}else if(drafts.length>5){%>
+                     <li>
+                        <a href="/u<%=userId%>/drafts">查看全部</a>
+                    </li>
                   <%}%>
                  
                  
@@ -72,7 +88,7 @@
               <li class="dropdown nav-question"> 
                 <a href="#" class="dropdown-toggle " data-toggle="dropdown">功能<b class="caret"> </b></a>
                 <ul class="dropdown-menu">
-                   <li><a href="/note/add">新建笔记</a></li>
+                   <li><a href="/note/add" target="_self">新建笔记</a></li>
                    <li><a href="javascript:;" onclick='quickQuestion()'>新建疑问</a></li>
                 </ul>
               </li>
@@ -82,6 +98,9 @@
                  <ul class=dropdown-menu>
                   <li><a  href='/setting'>我的帐号</a></li>
                   <li><a  href='/u<%=userId%>'>我的主页</a></li>
+                  <%if(role==1){%>
+                  <li><a  href='/admin'>管理员</a></li>
+                  <%}%>
                   <li><a  href='/logout'>退出</a></li>
                  </ul>
                </li>
@@ -109,9 +128,15 @@
       <li><a href="/about">关于我们</a></li>
       <li><a href="/join">加入我们</a></li>
     </ul> -->
-<a href="/about">关于我们</a>
-<a href="/join">加入我们</a>
+    91学涯是一个提供大家学习交流的平台，网站还处于测试期，有很多bug和很多功能没有完善,请大家见谅。
+    <a href="/feedback" target='_blank'>问题反馈</a>
+    <a href="www.miitbeian.gov.cn" nofollow target="_blank">沪ICP备13031681</a>
+    <a href="/about">关于我们</a>
+    <a href="/join">加入我们</a>
 	</footer>
+  <div id="feedback">
+    <a href="/feedback" target="_blank">问题反馈</a>
+  </div>
   <%if(userId==0){%>
   <div class="login-force-form hide">
       <div class='login-form'>
@@ -138,6 +163,7 @@
   <div id='question-form' class='hide'>
 
   </div>
+  <a href="javascript:;" id='backToTop'></a>
   <script type="text/javascript" src="/js/lib/bootstrap.js"></script>
   <script type="text/javascript" src="/js/lib/jquery-ui-1.10.3.custom.js"></script>
   <script type="text/javascript" src="/js/lib/jquery-ui-datepicker-zh.js"></script>
@@ -149,4 +175,8 @@
   <script type="text/javascript" src="/js/app.js"></script>
   <%-script%>
 </body>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fd4966a08aed078ccc95c4fe503b3b416' type='text/javascript'%3E%3C/script%3E"));
+</script>
 </html>

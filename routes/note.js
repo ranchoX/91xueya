@@ -1,4 +1,4 @@
-var Subject=require('./../models/book.js');
+var Book=require('./../models/book.js');
 var Note=require('./../models/note.js');
 module.exports=function(app){
 	app.all('/note/add',function(req,res,next){
@@ -7,43 +7,33 @@ module.exports=function(app){
 			res.redirect('/login?returnUrl=/note/add');
 		}
 	});
-	/*test*/
 	app.get('/note/add',function(req,res){
-		var reffer='';
+		var reffer=req.headers.referer;
+		if (!reffer) {
+			reffer="/"
+		};
+		res.locals.reffer=reffer;
+		res.locals.title='新建分享'
 		var subjectId=parseInt(req.query.subjectId);
 		var note=new Note();
 		var id=parseInt(req.query.id);
 		if (subjectId) {
-				Subject.findOne({id:subjectId},{"name":1,"menus.id":1,"menus.chapter":1,"menus.desc":1},function(err,doc){
-					if (doc) {
-						note.chapters=doc.menus;
-						note.subjectName=doc.name;
-						note.subjectId=subjectId;
-						res.render('note/add',{title:'写笔记',note:note});
-
-					}else{
-						res.render('note/add',{title:'写笔记',note:note});
-					}
-				})
+			Book.findSimpleById(id,function(doc){
+				if (doc) {
+					note.subjectId=subjectId;
+					note.cateId=doc.cateId;
+					res.render('note/add',{title:'写笔记',note:note});
+				}else{
+					res.render('note/add',{title:'写笔记',note:note});
+				}
+			})
 		}
 		else if(id){
-			Note.findOne({id:id},function(err,doc){
-				if (err) {
-					utils.error(err);
-					res.render('note/add',{title:'写笔记',note:note});
-				};
+			res.locals.title='编辑分享';
+			Note.findByNoteId(id,function(doc){
 				if (doc) {
 					if (doc.userId==req.session.user.id) {
-						note=doc;
-						Subject.findOne({id:note.subjectId},{"menus.id":1,"menus.chapter":1,"menus.desc":1},function(err,doc){
-							if (doc) {
-								note.chapters=doc.menus;
-								res.render('note/add',{title:'修改笔记',note:note});
-
-							}else{
-								res.render('note/add',{title:'写笔记',note:note});
-							}
-						})
+						res.render('note/add',{title:'写笔记',note:doc});
 					}else{
 						res.redirect('/error?msg=not auth');
 					}
@@ -63,11 +53,23 @@ module.exports=function(app){
 				res.redirect('/note');
 			}
 			if (doc) {
-				if (doc.state==1||doc.userId==req.session.user.id) {
+				if (doc.state==1||(req.session.user&&doc.userId==req.session.user.id)) {
 					var cate=_.find(cates,function(item){
 						return item.id==doc.cateId;
 					});
-					res.render('note/index',{title:doc.userName+'对《'+doc.subjectName+'》的笔记',note:doc,cate:cate});
+					var title;
+					if (doc.title) {
+						title= doc.title;
+					}
+					else if(doc.subject){
+						return '关于《'+doc.subject.name+'》的笔记';
+					}
+					else if(req.session.user&&note.userId==req.session.user.id){
+						title= toDate(doc.addDate)+'新建的笔记';
+					}else{
+						title= doc.userName+'的笔记';
+					}
+					res.render('note/index',{title:title,note:doc,cate:cate});
 				}else{
 					res.redirect('/error?msg=note not auth');
 				}

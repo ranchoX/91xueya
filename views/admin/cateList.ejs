@@ -37,7 +37,9 @@
 			</td>
 			<td>
 				<a href="/admin/cate/edit/<%=item.id%>">编辑</a>
-				<a href="/<%=item.alias%>" target='_blank'>enter</a>
+				<a href="/<%=item.alias%>" target='_blank'>进入</a>
+				<a href="javascript:;" class='openrss' data-id='<%=item.id%>' target='_blank'>开启rss</a>
+				<input class='rss-url' type='text' ><input data-id='<%=item.id%>' value='添加'  type='button' class='rss-btn'>
 				</td>
 		</tr>
 		<%})%>
@@ -45,4 +47,29 @@
 	
 </table>
 <a href="/admin/cate/add">add</a>
+<script type="text/javascript">
+	$(function(){
+		$(".openrss").click(function(){
+			var id=$(this).attr("data-id");
+			$.get('/admin/cate/openrss?id='+id,function(re){
+				if (re.ret==0) {
+					alert('success');
+				}else{
+					alert(re.msg);
+				}
+			})
+		})
+		$(".rss-btn").click(function(){
+			var id=$(this).attr("data-id");
+			var content=$(this).prev(".rss-url").val();
+			$.get('/admin/cate/addrss?id='+id+"&url="+content,function(re){
+				if (re.ret==0) {
+					alert('add success');
+				}else{
+					alert(re.msg);
+				}
+			})
+		})
+	})
+</script>
 <%script=''%>

@@ -10,13 +10,13 @@
 </script>
 <div class='row'>
 	<div class='span9'>
-		<div class='subject-detail'>
+		<div class='subject-detail clearfix'>
 			<input type='hidden' class='subject-id' value='<%=subject.id%>' />
 			<h1 class="subject-name"><%=subject.name%></h1>
 			<div class='subject-pic'>
-				<img src='<%=subject.pic%>' alt='<%=subject.name%>' width='102' height='144' />
+				<img src='<%=subject.pic%>' alt='<%=subject.name%>'/>
 				<br/>
-				<p>	<a href='/book/edit/<%=subject.id%>' class='gray' >描述有误反馈</a></p>
+				<p>	<a href='/admin/book/edit/<%=subject.id%>' class='gray' >描述有误反馈</a></p>
 			</div>
 			<div class='subject-info clearfix'>
 				<span class='pull-left'>作者:</span>
@@ -28,46 +28,13 @@
 				<span class='pull-left'>出版年:</span>
 				<%=subject.publishDate2%>
 				<br/>
-				<span class='pull-left'>分类:</span>
-				<a href='#find/<%=subject.cateId%>' >
-					<%=subject.cateName%></a>
-			</div>
-
-			<div class='subject-desc clearfix '>
-				<h2>内容简介  · · · · · ·</h2>
-				<pre class='pre'><%=subject.desc.trim()%></pre>
-			</div>
-			<div class='subject-questions'>
-				<h2>热门疑问</h2>
-				<%-partial('template/question.ejs',{questions:questions})%>
-			</div>
-			<div class='subject-notes '>
-				<h2>推荐笔记</h2>
-				<%-partial('template/note2.ejs',{notes:notes})%>
-			</div>
-			<div class='subject-menus'>
-				<h2>目录  · · · · · ·</h2>
-				<div class='book-menus-more'>
-					<pre class='pre'><%=getRowStr(subject.menus,5)%></pre>
-					.&nbsp;.&nbsp;.&nbsp;.&nbsp;.&nbsp;<a href='javascript:;' >(更多)</a>
-				</div>
-				<div class="hide book-menus-pick" >
-					<pre class='pre'>
-					 <%=subject.menus%>
-					</pre>
-					.&nbsp;.&nbsp;.&nbsp;.&nbsp;.&nbsp;<a href="javascript:;" > (收起)</a>
-				</div>
-			</div>
-		</div>
-			
-	</div>
-	
-	<div class="span3 ">
-		感谢<a href='/u<%=subject.userId%>' > <%=subject.userName%></a>
-		该书内搜索。。
-
-		<div class='subject-other'>
-			<div class='subject-study'>
+				<span class='pull-left'>学习人数:</span>
+				XX/XX
+				<br>
+				<span class='pull-left'>领域:</span>
+				<a href='/<%=subject.alias%>'><%=subject.cateName%></a>
+				<br/>
+				<span class='pull-left'>状态:</span>
 				<%if(!current){%>
 				<a href='javascript:;' class='subject-studingNum btn'>
 					在读</a>
@@ -75,31 +42,144 @@
 					读过</a>
 				<%}else{%>
 				<%=current.state==0?"在学":"已学"%>
-				<a href="javascript:;" id='book-deleteStudy'>delete</a>
-				<%}%></div>
-			<br/>
-			<a href='/note/add?subjectId=<%=subject.id%>' class='subject-note'>写笔记</a>
-			<a href='javascript:;' onclick='quickQuestion(<%=subject.cateId%>)' >有疑问？</a>
+				<a href="javascript:;" id='book-deleteStudy'>修改</a>
+				<%}%>
+				<br>
+				<a href='/note/add?subjectId=<%=subject.id%>' class='subject-note'>写笔记</a>
+				<a href='javascript:;' onclick='quickQuestion(<%=subject.cateId%>)' >有疑问？</a>
+				<!-- Baidu Button BEGIN -->
+				<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
+				<a class="bds_qzone"></a>
+				<a class="bds_tsina"></a>
+				<a class="bds_tqq"></a>
+				<a class="bds_renren"></a>
+				<a class="bds_t163"></a>
+				<span class="bds_more">更多</span>
+				<a class="shareCount"></a>
+				</div>
+				<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6679080" ></script>
+				<script type="text/javascript" id="bdshell_js"></script>
+				<script type="text/javascript">
+				document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+				</script>
+				<!-- Baidu Button END -->
+			</div>
+		</div>
+		<div id="tabs">
+			  <ul>
+			    <li><a href="#desc">简介</a></li>
+			    <li><a href="#note">笔记</a></li>
+			    <li><a href="#question">疑问</a></li>
+			  </ul>
+			  <div id="desc">
+				    <div class='subject-desc clearfix '>
+						<h2>内容简介  · · · · · ·</h2>
+						<pre class='pre'><%=subject.desc.trim()%></pre>
+					</div>
+					<div class='subject-menus'>
+						<h2>目录  · · · · · ·</h2>
+						<div class='book-menus-more'>
+							<pre class='pre'><%=getRowStr(subject.menus,5)%></pre>
+							.&nbsp;.&nbsp;.&nbsp;.&nbsp;.&nbsp;<a href='javascript:;' >(更多)</a>
+						</div>
+						<div class="hide book-menus-pick" >
+							 <pre class='pre'><%=subject.menus%></pre>
+							.&nbsp;.&nbsp;.&nbsp;.&nbsp;.&nbsp;<a href="javascript:;" > (收起)</a>
+						</div>
+					</div>
+					<div id="note" >
+						<a href="javscript:;" name='note'></a>
+						<h2>相关笔记</h2>
+				      	<%_.each(notes,function(item){%>
+					  		<div class="note-item clearfix">
+								<a href="/u<%=item.userId%>" class='user-pic'>
+									<img class='img-polaroid' src="/img/user/user.jpg">
+								</a>
+								<div class="note-detail">
+									<h4> 
+										<a href="/note/item.id%>" target='_blank'><%=noteTitle(item)%></a>
+									</h4>
+									<div class="note-content ">
+										<%-item.content%>
+									</div>
+									<div class="note-btn">
+										<span class='gray'><%=item.addDate%></span>
+										
+										<a href="javascript:;" class='note-comment pull-right' data-id='<%=item.id%>'>评价(<%=item.commentNum%>)</a>
+									</div>
+								</div>
+							</div>
+					  	<%})%>
+					  	<%if(notes.length==0){%>
+					  	暂无相关笔记
+					  	<%}%>
+				  </div>
+				  <div id="question" name='question'>
+				  	<a href="javscript:;" name='question'></a>
+					<h2>相关问题</h2>
+				 	<% for(var i=0;i<questions.length;i++){%>
+					<div class="question-item clearfix">
+						<div class='question-pic'>
+							<a href='/u<%=questions[i].userId%>'><img src='/img/user/user.jpg'/></a>
+							<br/>
+							<a href='/u<%=questions[i].userId%>'><%=questions[i].userName%></a>
+						</div>
+						<div class='question-info'>
+							<h6><a href='/question/<%=questions[i].id%>'> <%=questions[i].title%></a></h6>
+							<div>
+								<%-questions[i].content%>
+							</div>
+							位于:<%=questions[i].subject?(questions[i].subject?questions[i].subject.chapter:''):''%>
+							<span class='pull-right'><%=questions[i].addDate3%></span>
+						</div>
+					</div>
+					<%}%>
+					<%if(notes.length==0){%>
+				  	暂无相关问题
+				  	<%}%>
+				  </div>
+				
+			  </div>
+			</div>	
+	</div>
+	
+	<div class="span3 ">
+		<div>
+			在当前书内搜索
+			<div class="control-group pull-right">
+			  <div class="controls">
+			    <div class="input-prepend">
+			      <input type="text" placeholder="查询">
+		          <span class="add-on"><i class="icon-search"></i></span>
+			    </div>
+			  </div>
+			</div>
+		</div>
+		<div>
+			<h6>相关书籍</h6>
+			<ul>
+				<li>xxx</li>
+			</ul>
 		</div>
 		<% var studingPeople=_.filter(subject.studyPeoples,function(people){return people.state==0})%>
-		<%=studingPeople.length%>人正在学习..
+		正在学习..
 		<ul>
 			<%for(var i=0;i<studingPeople.length;i++){%>
 			<li>
 				<div>
-					<a href='/u<%=studingPeople[i].userId%>'><img src='' /> </a>
+					<a href='/u<%=studingPeople[i].userId%>'><img src='/img/user/user.jpg' /> </a>
 					<a href='/u<%=studingPeople[i].userId%>'> <%=studingPeople[i].userName%></a>
 				</div>
 			</li>
 			<%}%>
 		</ul>
 		<% var studiedPeople=_.filter(subject.studyPeoples,function(people){return people.state!=0})%>
-		<%=studiedPeople.length%>人已学习..
+		已学习..
 		<ul>
 			<%for(var i=0;i<studiedPeople.length;i++){%>
 			<li>
 				<div>
-					<a href='/u<%=studiedPeople[i].userId%>'><img src='' /> </a>
+					<a href='/u<%=studiedPeople[i].userId%>'><img src='/img/user/user.jpg' /> </a>
 					<a href='/u<%=studiedPeople[i].userId%>'> <%=studiedPeople[i].userName%></a>
 				</div>
 			</li>
@@ -107,8 +187,6 @@
 		</ul>
 	</div>
 </div>
-
-
 <div class='hide subject-study-dialog'>
 </div>
 <%script='<script type="text/javascript" src="/js/book-index.js"></script>'%>

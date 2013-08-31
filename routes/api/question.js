@@ -1,4 +1,5 @@
 var Question=require('./../../models/question.js');
+var xss=require('xss');
 var pageSize=20;
 module.exports=function(app){
 	app.get('/api/question',function(req,res){
@@ -11,6 +12,7 @@ module.exports=function(app){
 		if(!page){
 			page=1;
 		}
+		findObj.sort("-addDate");
 		findObj.limit(page*pageSize).exec(function(err,doc){
 			if (err) {throw err}
 			res.json(doc);
@@ -27,10 +29,17 @@ module.exports=function(app){
 			}
 			question.cateId=cate.id;
 			question.cateName=cate.name;
-			question.subjectId=req.body.subjectId;
+			var subjectId=parseInt(req.body.subjectId);
+			if (subjectId) {
+				question.subject={
+					id:subjectId
+				}
+				if (req.body.chapter) {
+					question.subject.chapter=req.body.chapter;
+				};
+			};
 			question.title=req.body.title;
-			question.content=req.body.content;
-			question.location=req.body.location;
+			question.content=xss(req.body.content);
 			question.userId=req.session.user.id;
 			question.userName=req.session.user.username;
 			question.save(function(err,doc){

@@ -72,13 +72,14 @@ BookSchema.virtual("publishDate2").get(function(){
 	}
 	
 })
-BookSchema.virtual("subjectType").get(function(){
-	return 'book';
-})
+// BookSchema.virtual("subjectType").get(function(){
+// 	return 'book';
+// })
 BookSchema.statics.findSimpleById=function(id,fn){
 	this.findOne({id:id},{id:1,name:1,pic:1,cateId:1,cateName:1},function(err,doc){
 		if (err) {
-			utils.error(err);
+			util.error(err);
+			fn(null);
 		}
 		fn(doc);
 	})
@@ -123,7 +124,7 @@ BookSchema.statics.addStudy=function(id,studyUser){
 			}
 			//不等待上面的执行
 			var User=require('./user');
-			var studyBook={id:book.id,name:book.name,pic:book.pic,state:studyUser.state};
+			var studyBook={id:book.id,name:book.name,pic:book.pic,state:studyUser.state,cateId:book.cateId};
 			User.addStudyBooks(studyUser.userId,studyBook);
 		};
 			

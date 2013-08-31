@@ -23,7 +23,7 @@ module.exports=function(app){
 					 		};
 						});
 				};
-				Note.find({subjectId:doc.id,State:1},function(err,notes){
+				Note.findByBookId(doc.id,function(notes){
 					if (err) {
 						util.error(err);
 						notes=[];

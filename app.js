@@ -14,15 +14,12 @@ var express = require('express')
   ,util=require('util')
   ,route=require('./route.js')
   ,redis=require('redis')
-  ,setting={
-    key:'91xueya',
-    cookieSecret:'Lycoria$%^&&rancho',
-    db:'microblog'
-  }
-  ,fs=require('fs'); 
+  ,setting=require('./config')
+  ,fs=require('fs')
+  ,viewHelper=require('./viewhelper'); 
 
-var accessLogfile=fs.createWriteStream('access.log', {flags:'a'});
-var errorLogfile=fs.createWriteStream('error.log', {flags:'a'});
+var accessLogfile=fs.createWriteStream(__dirname+'/access.log', {flags:'a'});
+var errorLogfile=fs.createWriteStream(__dirname+'/error.log', {flags:'a'});
 var uri='mongodb://localhost/'+setting.db;
 global.db=mongoose.connect(uri);
 var idGenerator=require('./models/idGenerator');
@@ -36,11 +33,18 @@ global.cache=redis.createClient();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
+app.use(express.favicon());
+app.use(express.static(__dirname+'/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-app.use(express.favicon());
+/*develop*/
+app.configure('development',function(){
+   app.use(express.logger('dev'));
+})
+app.configure('production',function(){
+  app.use(express.logger({stream:accessLogfile}));
+})
 
-app.use(express.logger({stream:accessLogfile}));
 app.use(express.bodyParser({
   uploadDir:__dirname+'/tmp'
 }));
@@ -48,13 +52,56 @@ app.use(express.methodOverride());
 app.use(express.cookieParser());
 var RedisStore = require('connect-redis')(express);
 app.use(express.session({key:setting.key, secret: setting.cookieSecret,store:new RedisStore()}));
-app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(partials());
 
 params.extend(app);
+var User=require('./models/user');
+app.locals(viewHelper);
+app.locals.userId=0;
+app.locals.username='';
+app.locals.attentionCates=[];
+app.locals.role=0;
+app.locals.keywords='node.js,mongodb,asp.net';
+app.locals.descript='91学呀是学习分享类的社区网站，提供大家学习node.js,mongodb,asp.net等大家正在学习的东西';
+app.use(function(req,res,next){
+  if (req.session.user) {
+        res.locals.userId=req.session.user.id;
+        res.locals.username=req.session.user.username;
 
+        //以后按照数据的..
+        if (res.locals.username=='rancho'||res.locals.username=='Lycoria'||res.locals.username=='暖暖圆') {
+          req.role=1;
+          res.locals.role=1;
+        }
+        if (req.method=="GET"&&req.url.indexOf('/api')!=0) {
+            User.findByUserId(req.session.user.id,function(doc){
+              if (doc) {
+                  res.locals.attentionCates=doc.attentionCates;
+                  res.locals.drafts=doc.drafts;
+                  res.locals.studyBooks=doc.studyBooks;
+                  req.cUser=doc;
+                  //todo:filter image
+              }else{
+                 res.locals.userId=0;
+                 res.locals.username='';
+                 req.session.user=null;
+              }
+              next();
+            })
+
+        }else{
+          next();
+        }
+        
+  }else{
+     next();
+  }
+})
 app.use(app.router);
 route(app);
+
+
 
 var cates=require('./models/cate');
 cates.simples(function(doc){
@@ -77,13 +124,41 @@ app.use(function(err, req, res, next){
   // if an error occurs Connect will pass it down
   // through these "error-handling" middleware
   // allowing you to respond however you like
-  var meta='['+new Date()+']'+req.url+'\n';
-  errorLogfile.write(meta+err.stack+'\n');
-  res.send(500, { error: err });
+  //dev
+  // var meta='['+new Date()+']'+req.url+'\n';
+  // errorLogfile.write(meta+err.stack+'\n');
+  // res.send(500, { error: err });
+  throw err;
 })
 cache.on("error", function (err) {
         console.log("redis Error " + err);
 });
+/*test*/
+var Rss=require('./models/rss.js');
+// var rss=new Rss({
+//   cateId:3,
+//   url:[{
+//     url:'www.baidu.com5',
+//     updateDate:Date.now()
+//   }],
+//   data:[{
+//     title:'wxp51',
+//     summary:'test capped4',
+//     link:'www.baidu.com/link4',
+//     author:{
+//       name:'me2',
+//       link:'www.baidu.com/u78***4'
+//     }}
+//   ]
+// })
+// rss.save(function(err,doc){
+//   if (err) {
+//     console.error(err);
+//   }else{
+//     console.log(doc);
+//   }
+// })
+
 // development only
 // if ('development' == app.get('env')) {
 //   app.use(express.errorHandler());

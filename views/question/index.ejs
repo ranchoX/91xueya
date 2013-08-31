@@ -9,40 +9,30 @@
 	<div class="span8">
 		<div id='question-main'>
 			<h1 class='title'>
-				<i class='icon-lightbulb'></i>
 				<span><%=ques.title%></span>
 			</h1>
-				<div>
-					<a href="/u<%=ques.userId%>" target='_blank'><%=ques.userName%></a>
-					<span class='pull-right gray'><%=ques.addDate3%></span>
-				</div>
-				<div class='question-content' ><%=ques.content.trim()%></div>
-				<div class='question-location' >位置:<%=ques.location%></div>
-				<%if(ques.acceptIndex){%>
-					<%var acceptAnswer=_.find( ques.answers,function(item){
-						return item.id==ques.acceptIndex
-					})%>
-					满意答案
-					<%=acceptAnswer.content%>
-				<%}else if(userId==ques.userId){%>
-						<a href="/question/edit/<%=ques.id%>">补充内容</a>
-					<%}else if(!hadAnswer){%>
-					<a href="javascript:;" id='quetion-better-answer'>我有更好的答案<i class=' icon-caret-up'></i></a>
-					<div id='question-answer-form'>
-						<textarea></textarea>
-						<input type='button' class='pull-right' value='提交回答'>
-					</div>
+			<div class='question-content' ><%-ques.content%></div>
+			<%if(ques.subject){%>
+				<h6>关联书籍</h6>
+				<img src="<%=ques.subject.pic%>" />
+				<a href="/book/<%=ques.subject.id%>"><%=ques.subject.name%></a>
+				<%if(ques.subject.chapter){%>
+				位置:<%=ques.chapter%>
 				<%}%>
+			<%}%>
+			<%if(ques.userId==userId){%>
+			<a href="/question/edit/<%=ques.id%>">编辑</a>
+			<%}%>
 		</div>
+		<%if(ques.answer){%>
+			<div id='accept-answer'>
+				<%=ques.answer.content%>
+				<%=ques.answer.userName%>
+			</div>
+		<%}%>
 		<%if(ques.answers&&ques.answers.length){%>
 		<div id='quetion-other-answers'>
-			<div>
-				<b><%=ques.answers.length%>条回答</b>
-			</div>
 			<%for(var i=0;i<ques.answers.length;i++){%>
-				<%if(ques.acceptIndex==ques.answers[i].id){
-					continue;
-				}%>
 				<div class='question-answer-item'>
 					<div>
 						<a href="/u<%ques.answers[i].userId%>"><%=ques.answers[i].userName%></a>
@@ -66,9 +56,6 @@
 						<a href="javascript:;" class='btn accept' data-answerId='<%=ques.answers[i].id%>' >采纳答案</a>
 						<a href="javascript:;" class='btn pushAsk' data-answerId='<%=ques.answers[i].id%>' >追问</a>
 						<%}%>
-						<%if(ques.answers[i].userId==userId){%>
-						<a href="javascript:;" class='btn perfectAnswer'>完善我的回答</a>
-						<%}%>
 						<a href="javascript:;" class='pull-right'>评论</a>
 					</div>
 					<div class='pushAsk-container hide'>
@@ -79,12 +66,26 @@
 			<%}%>
 		</div>
 		<%}%>
-
+		<%if(!hadAnswer&&ques.userId!=userId){%>
+		<div id='question-answer-form'>
+			<textarea></textarea>
+			<input type='button' class='pull-right' value='提交回答'>
+		</div>
+		<%}%>
 	</div>
 	<div class="span3 offset1">
+		<input type='button' value='觉得不错赞一个'>
+		<br>
+		<span class='gray'><%=ques.viewNum%>次阅读</span>
+		<br>
+		<span class='gray'><%=ques.answerNum%>次回答</span>
 		<div>
-			<img src="<%=book.pic%>" />
-			<a href="/book/<%=book.id%>"><%=book.name%></a>
+			<h6>相关问题</h6>
+			<ul class='nav'>
+				<li>
+					<a href="/">content</a>
+				</li>
+			</ul>
 		</div>
 	</div>
 </div>

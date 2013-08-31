@@ -1,3 +1,17 @@
+
+<div class='filter'>
+	<div class="btn-group ">
+		<a href="javascript:;" id="note-show" class="active btn">默认</a>
+		<a href="javascript:;" id="ques-show" class="btn">时间</a>
+	</div>
+	<div class="control-group pull-right">
+	  <div class="controls">
+	    <div class="input-prepend">
+	      <input type="text" placeholder="查询">
+          <span class="add-on"><i class="icon-search"></i></span>
+	    </div>
+	  </div>
+</div>
 <%if(ques.length){%>
 <%for(var i=0;i<ques.length;i++){%>
 <div class="ques-item clearfix" data-id='<%=ques[i].get('id')%>'>

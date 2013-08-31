@@ -9,18 +9,18 @@
     2、如果你自己写的代码无法运行，可以选择上传相关文件（5M一下）提问前采取了什么步骤去解决它.'></textarea>
 </div>
 <div class='question-bottom'>
-   位置:
-   <input value='' type='text' style='width: 161px;' class='question-location span4' placeholder='url地址或者文章第几章节第几页' />
-   <br/>
   分类：
   <select style="width: 60px;" id='question-cate'>
     <%for(var i=0;i<cates.length;i++){%>
     <option value='<%=cates[i].id%>' <%=question.cateId==cates[i].id?'selected=selected':''%>><%=cates[i].name%></option>
     <%}%>
   </select>
-  书籍: <input value='book' id='question-books' class='hide' /> <span id='question-books-hide' class='btn '>未选中</span>
- 
- 
-  <input class='pull-right submit' type='button' value='提交'/>
-  
+  相关书籍 <small class='gray'>(可不选)</small>: <input value='' id='question-books' class='hide' style='width: 148px;' /> <span id='question-books-hide' class='btn '>未选中</span>
+ <div  id='question-chapter' class='hide'>
+   位置<small class='gray'>(可不填)</small>:
+   <input value='' type='text' style='width: 161px;' class='question-location span4' placeholder='url地址或者文章第几章节第几页' />
+ </div>
+ <div>
+   <input class='pull-right submit' type='button' value='提交'/>
+ </div>
 </div>

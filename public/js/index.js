@@ -95,5 +95,33 @@ $(function(){
 			})
 	
 	})
-
+	$("#ques-show").click(function(){
+		$(this).addClass("active");
+		$("#note-show").removeClass('active')
+		$("#recommend-items").hide();
+		$("#recommend-ques").show();
+	})
+	$("#note-show").click(function(){
+		$(this).addClass("active");
+		$("#ques-show").removeClass("active");
+		$("#recommend-items").show();
+		$("#recommend-ques").hide();
+	})
+	$("#ques-show").one("click",function(){
+		var cateId=user.attentionCates[0]?user.attentionCates[0].id:0;
+		var collections=new app.collections.Questions(cateId);
+		var view =new app.views.QuestionsView({collection:collections,el:'#ques-items'});
+		$("#recommend-ques .filter a:first").addClass("active")
+		$("#recommend-ques .filter a").click(function(){
+			$("#recommend-ques .filter a").removeClass("active");
+			$(this).addClass("active");
+			var cateId=$(this).attr("data-id");
+			collections.url="/api/question?cateId="+cateId;
+			collections.fetch({success:function(arguments){
+				
+			},error:function(obj,xhr){
+				console.log(xhr.responseText);
+			},reset:true})
+		})
+	})
 })

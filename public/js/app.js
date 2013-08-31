@@ -73,83 +73,7 @@ $(function(){
 			})
 		}
 	});
-	app.views.BooksView=Backbone.View.extend({
-
-		initialize:function(){
-			this.collection.on('reset',this.render,this);
-		},
-		render:function(callback){
-			var self=this;
-			app.template('book.html',function(data){
-				var templateData=_.template(data,{books:self.collection.models});
-				self.$el.html(templateData);
-				if (callback instanceof Function) {
-					callback(self);
-				};
-			});
-		},
-		events:{
-			"click .study-btn":"addStudy",
-			"click .book-commnetNum":"getComment"
-		},
-		addStudy:function(e){
-			forceLogin(function(){
-				var self=e.currentTarget;
-				var bookId=$(self).attr("data-bookId");
-				var studyType=$(self).attr("data-studyType");
-				var typeName='正在学习';
-				var tips='已经将该书添加到正在学习列表。你可以发表你学习过程的笔记和大家一起分享讨论';
-				if (studyType!=0) {
-					typeName='已学习';
-					tips='已经将该书添加到已学习列表。你可以发表你学习过程的笔记和大家一起分享讨论';
-				}
-				$.ajax({
-						url:'/api/book/addstudy',
-						data:{id:bookId,studyType:studyType},
-						type:'post',
-						dataType:'json',
-						success:function(re){
-							if (re.ret==0) {
-								var $dialog=$("<div></div>");
-								$dialog.text(tips);
-								$dialog.dialog({
-									title:"提示",
-									buttons:[{text:'确定',click:function(){
-										$(this).dialog('close');
-										var parent= $(self).parent();
-										parent.find(".study-btn").remove();
-										parent.parent().find(".book-name").after(typeName);
-									}}]
-								})
-							}
-							else{
-								console.error(re.msg);
-							}
-						},
-						error:function(err){
-							console.error(err);
-						}
-					})
-				
-			})
-		},
-		getComment:function(e){
-			var self=e.currentTarget;
-			var $commentContainer=$(self).parent().next(".comment-container");
-			if ($commentContainer.length==0) {
-				var bookId=$(self).attr("data-bookId");
-				var $container=$("<div class='comment-container'></div>");
-				$(self).parent().after($container)
-				var comments=new app.collections.Comments('book',bookId);
-				var commentNoteView=new app.views.CommentsView({el:$container,collection:comments,plat:'book',targetId:bookId});
-				
-			}else{
-				$commentContainer.toggle();
-			}
-			
-		}
-		
-	})
+	
 	
 	/*end book 
 		begin comment
@@ -368,9 +292,6 @@ $(function(){
 					}
 				})
 			})
-			
-			
-
 		}
 	})
 	app.views.QuestionView=Backbone.View.extend({
@@ -389,7 +310,7 @@ $(function(){
 				var html=_.template(template,{question:self.model.attributes});
 				self.$el.html(html);
 				self.editor=KindEditor.create('.question-content',{
-					minWidth:'420px',
+					minWidth:'450px',
 					allowPreviewEmoticons:false,
 					items:['image','code','template']
 				})
@@ -399,13 +320,17 @@ $(function(){
 					$( "#question-books" ).trigger("focus");
 				})
 				$( "#question-books" ).autocomplete({
-						delay: 500,
 				  		source: "/api/book/search",
-					    minLength: 2,
 					    select:function(event,ui){
-					    	$("#question-books-hide").text(ui.item.value).show();
-					    	$(this).hide();
-					    	self.model.set('subjectId',ui.item.id);
+					    	if (ui.item.value=='') {
+					    		$("#question-books-hide").text('未选中').show();
+					    		$(this).hide();
+					    		self.model.set('subjectId',0);
+					    	}else{
+					    		$("#question-books-hide").text(ui.item.value).show();
+					    		$(this).hide();
+					    		self.model.set('subjectId',ui.item.id);
+					    	}
 					    },
 				      	response: function( event, ui ) {
 				      		_.each(ui.content,function(item){
@@ -414,14 +339,22 @@ $(function(){
 				      		})
 				      		if (ui.content.length==0) {
 				      			self.model.set('subjectId',0);
+				      			ui.content.push({
+				      				label:'没有找到对应的书籍',
+				      				value:''
+				      			})
 				      		};
 				      	}
 				}).blur(function(){
 					$(this).hide();
+					$("#question-books-hide").show();
 					if (self.model.get('subjectId')==0) {
 						$("#question-books-hide").text("未选中");
-					};
-					$("#question-books-hide").show();
+						$("#question-chapter").hide();
+					}else{
+						$("#question-chapter").show();
+					}
+					
 					
 				});
 				$("#question-cate").change(function(){
@@ -435,26 +368,20 @@ $(function(){
 			var self=this;
 			var title=this.$el.find(".question-title").val();
 			var content=self.editor.html();
-			var location=this.$el.find(".question-location").val();
+			var chapter=$.trim(this.$el.find(".question-location").val());
 			this.model.set({
 				title:title,
-				content:content,
-				location:location
+				content:content
 			});
+			if (this.model.get('subjectId')&&chapter!='') {
+				this.model.set('chapter',chapter);
+			};
 			if (!this.model.isValid()) {
 				alert(this.model.validationError);
 				return false;
 			}
-			this.model.save({},{success:function(){
-				self.$el.dialog('close');
-				$( "#tips-ok" ).dialog({
-			      modal: true,
-			      buttons: {
-			        Ok: function() {
-			          $(this).dialog( "close" );
-			        }
-			      }
-			    });
+			this.model.save({},{success:function(model){
+				location.href='/question/'+model.id;
 			},error:function(){
 				alert('save error');
 			}})
@@ -465,8 +392,8 @@ $(function(){
 			
 			this.$el.dialog({
 				title:'描述问题',
-				width:420,
-				height:300
+				width:450,
+				height:400
 			})
 		}
 	})

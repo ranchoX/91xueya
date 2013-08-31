@@ -17,9 +17,14 @@ module.exports=function(app){
 						hadAnswer=true;
 					};
 				};
-				Book.findByBookId(ques.subjectId,function(book){
-					res.render('question/index',{title:ques.name+'-问题',ques:ques,hadAnswer:hadAnswer,book:book});	
-				})
+				if (ques.subject) {
+					Book.findByBookId(ques.subject.id,function(book){
+						res.render('question/index',{title:ques.title+'-问题',ques:ques,hadAnswer:hadAnswer,book:book});	
+					})
+				}else{
+					res.render('question/index',{title:ques.title+'-问题',ques:ques,hadAnswer:hadAnswer,book:null});	
+				}
+				
 				
 
 			}else{

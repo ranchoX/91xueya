@@ -1,16 +1,17 @@
 var Schema=require('mongoose').Schema;
 var NoteSchema=new Schema({
 	id:{type:Number,unique:true},
-	subjectId:{type:Number,require:true},
-	subjectName:{type:String,require:true},
-	cateId:{type:Number,require:true},
+	//subjectId:{type:Number},
+	//subjectName:{type:String},
+	subject:Object,
+	cateId:{type:Number},
 	cateName:String,
-	title:{type:String,require:true},
+	title:{type:String},
 	userId:{type:Number,require:true},
 	userName:{type:String,require:true},
+	//chapter:String,
 	content:{type:String,require:true},
 	addDate:{type:Date,default:Date.now()},
-	updateDate:{type:Date},
 	publishDate:{type:Date},
 	readNum:{type:Number,default:0},
 	commentNum:{type:Number,default:0},
@@ -22,7 +23,7 @@ NoteSchema.path("content").validate(function(value){
 },'笔记不能为空')
 NoteSchema.pre('save',function(next){
 	var self=this;
-	if (self.isNew) {
+	if (!self.id) {
 		idGenerator.getNewId('note',function(id){
 		 	self.id=id;
 			next();
@@ -56,9 +57,43 @@ NoteSchema.virtual("addDate3").get(function(){
 	};
 	return undefined;
 })
-NoteSchema.virtual("subjectType").get(function(){
-	return 'note';
-})
+// NoteSchema.virtual("subjectType").get(function(){
+// 	return 'note';
+// })
+NoteSchema.statics.findByNoteId=function(id,fn){
+	var key="NoteId"+id;
+	var self=this;
+	cache.get(key,function(err,note){
+		if (note) {
+			fn(JSON.parse(note));
+		}else{
+			self.findOne({"id":id},function(err,doc){
+				if (err) {
+					utils.error(err);
+				}
+				cache.set(key,JSON.stringify(doc));
+				fn(doc);
+			})
+		}
+	})
+}
+NoteSchema.statics.findByBookId=function(id,fn){
+	var key="findByBookId"+id;
+	var self=this;
+	cache.get(key,function(err,note){
+		if (note) {
+			fn(JSON.parse(note));
+		}else{
+			self.find({"subject.id":id,state:1}).sort("-publishDate").exec(function(err,doc){
+				if (err) {
+					throw err;
+				}
+				cache.set(key,JSON.stringify(doc));
+				fn(doc);
+			})
+		}
+	})
+}
 NoteSchema.statics.push=function(id){
 	this.findOne({id:id},function(err,note){
 		var Broadcast=require('./broadcast');

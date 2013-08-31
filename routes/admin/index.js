@@ -51,6 +51,7 @@ module.exports=function(app){
 		};
 		book.desc=book.desc.trim();
 		book.menus=book.menus.trim();
+		book.name=book.name.replace("'","").replace('"',"");
 		if (book.id>0) {
 			Book.update({id:book.id},{
 				pic:book.pic,
@@ -165,7 +166,49 @@ module.exports=function(app){
 			})
 
 		}
-	}) 
+	})
+	app.get('/admin/cate/openrss',function(req,res){
+		var Rss=require('./../../models/rss');
+		var rss=new Rss();
+		rss.cateId=req.query.id;
+		if (rss.cateId) {
+			rss.save(function(err,doc){
+				if (err) {
+
+					res.json({ret:-1,msg:err.msg});
+				}else{
+					res.json({ret:0,data:doc});
+				}
+			})
+		}else{
+			res.json({ret:-1,msg:'param '})
+		}
+		
+	})
+	app.get('/admin/cate/addrss',function(req,res){
+		var Rss=require('./../../models/rss');
+		var id=req.query.id;
+		var url=req.query.url;
+		if (id&&url) {
+			Rss.update({cateId:id},{"$push":{url:{
+				url:url,
+				state:0,
+				updateDate:Date.now()
+			}}},function(err,re){
+				if (err) {
+					throw err;
+				}
+				if (re==1) {
+					res.json({ret:0})
+				}else{
+					res.json({ret:-1,msg:'not open'});
+				}
+			})
+		}else{
+			res.json({ret:-1,msg:'param '})
+		}
+		
+	})  
 }
 function moveImage(path,newPath){
 	var fs=require('fs');

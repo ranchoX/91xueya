@@ -70,6 +70,27 @@ module.exports=function(app){
 		}
 
 	})
+	app.get('/api/user/readBook',function(req,res){
+		if (req.session.user) {
+			User.findByUserId(req.session.user.id,function(doc){
+				if (doc) {
+					var cateId=req.query.cateId;
+					if (cateId) {
+						var data=_.filter(doc.studyBooks,function(item){
+							return item.cateId==cateId;
+						})
+						res.json({ret:0,data:data});
+
+					}else{
+						res.json({ret:0,data:doc.studyBooks})
+					}
+					
+				};
+			})
+		}else{
+			res.json({ret:0,data:[]});
+		}
+	})
 	app.post('/api/user/atten',function(req,res){
 		if (req.session.user) {
 			var cateId=req.body.cateId;
@@ -82,6 +103,7 @@ module.exports=function(app){
 						throw err;
 					}
 					res.json({ret:0,data:doc});
+					cache.del('webUser2'+req.session.user.id);
 				})
 			}else{
 				res.json(401,'params not match');
@@ -93,13 +115,14 @@ module.exports=function(app){
 	})
 	app.delete('/api/user/atten',function(req,res){
 		if (req.session.user) {
-			var cateId=req.body.cateId;
+			var cateId=parseInt(req.body.cateId);
 			if (cateId) {
 				User.update({id:req.session.user.id},{"$pull":{"attentionCates":{id:cateId}}},function(err,doc){
 					if (err) {
 						throw err;
 					}
 					res.json({ret:0,data:doc});
+					cache.del('webUser2'+req.session.user.id);
 				})
 			}else{
 				res.json(401,'params not match');

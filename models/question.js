@@ -13,7 +13,6 @@ AnswerSchema.virtual("updateDate2").get(function(){
 })
 AnswerSchema.virtual("updateDate3").get(function(){
 	var timestamp=Date.now()-this.updateDate;
-	console.log(timestamp);
 	var second=Math.ceil( timestamp/1000);
 	switch(true){
 		case second<60:
@@ -40,18 +39,20 @@ AnswerSchema.pre('save',function(next){
 })
 var QuestionSchema=new Schema({
 	id:{type:Number},
-	fileUrl:{type:String},
 	title:{type:String},
 	content:{type:String},
 	state:{type:Number,default:0},
 	userId:{type:Number},
 	userName:{type:String},
 	answers:[AnswerSchema],
-	location:String,
+	answerNum:{type:Number,default:0},
+	viewNum:{type:Number,default:0},
+	suportNum:{type:Number,default:0},
+	suportUsers:[],
+	subject:Object,
 	cateId:Number,
 	cateName:String,
-	subjectId:{type:Number},
-	acceptIndex:Object,
+	answer:Object,
 	addDate:{type:Date,default:Date.now()}
 })
 QuestionSchema.pre('save',function(next){
@@ -71,23 +72,27 @@ QuestionSchema.virtual("addDate2").get(function(){
 	return date.getFullYear()+'年'+(date.getMonth()+1)+'月'+date.getDate()+'日';
 })
 QuestionSchema.virtual("addDate3").get(function(){
-	var timestamp=Date.now()-this.addDate;
-	console.log(timestamp);
-	var second=Math.ceil( timestamp/1000);
-	switch(true){
-		case second<60:
-			return second+'秒前';
-		case second<3600:
-			return Math.ceil(second/60)+'分钟前';
-		case second<86400:
-			return Math.ceil(second/60/60/24)+'小时前';
-		default:
-			return this.addDate2;
-	}
+	if (this.addDate) {
+		var timestamp=Date.now()-this.addDate;
+		var second=Math.floor( timestamp/1000);
+		switch(true){
+			case second<60:
+				return second+'秒前';
+			case second<3600:
+				return Math.floor(second/60)+'分钟前';
+			case second<7200:
+				return '1小时前'
+			case second<86400:
+				return this.addDate.getHours()+":"+this.addDate.getMinutes();
+			default:
+				return this.addDate2;
+		}
+	};
+	return undefined;
 })
-QuestionSchema.virtual("subjectType").get(function(){
-	return 'question';
-})
+// QuestionSchema.virtual("subjectType").get(function(){
+// 	return 'question';
+// })
 QuestionSchema.statics.findByQuesId=function(id,fn){
 	this.findOne({id:id},function(err,ques){
 		if (err) {
@@ -96,6 +101,7 @@ QuestionSchema.statics.findByQuesId=function(id,fn){
 		fn(ques);
 	})
 }
+
 QuestionSchema.statics.addAnswer=function(id,answer,callback){
 	var self=this;
 	self.findByQuesId(id,function(ques){
